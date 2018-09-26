@@ -1,9 +1,10 @@
+from collections import Counter
 import json_lines
 import json
 import spacy
 import nltk
 
-with open('guardian_sample.jsonl', 'r') as f:
+with open('sample1.jsonl', 'r') as f:
     for item in json_lines.reader(f):
         content = (item['fields']['bodyText'])
 
@@ -16,13 +17,28 @@ with open('guardian_sample.jsonl', 'r') as f:
         doc = nlp(text)
 
         for entity in doc.ents:
-            print(entity.text, entity.label_ )
+            if entity.label_ in ('GPE'):
+                print(entity.text, entity.label_ )
 
-        #tokens = nltk.word_tokenize(text)
+        tokens = nltk.word_tokenize(text)
 
-        #tagged = nltk.pos_tag(tokens)
+        tagged = nltk.pos_tag(tokens)
 
-        #entities = nltk.chunk.ne_chunk(tagged)
+        entities = nltk.chunk.ne_chunk(tagged)
 
-        #print(entities)
+        for word, tag in tagged: 
+            if tag in ('NNP'):
+                #print((word, tag)) 
+
+                document = nlp(word)
+
+                for entity1 in document.ents:
+                     if entity1.label_ in ('GPE'):
+                         print(entity1.text)
+                
+
+
+
+       
+
 
