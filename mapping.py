@@ -6,6 +6,9 @@ import nltk
 import mysql.connector
 from mysql.connector import Error
 from mysql.connector import errorcode
+import re
+import urllib.request, json
+import time 
 
 connection = mysql.connector.connect(
   host="localhost",
@@ -67,7 +70,7 @@ with open('guardian-2017.jsonl', 'r') as f:
 
                 for entity1 in document.ents:
                      if entity1.label_ in ('GPE'):
-                         #print(id['id'], entity1.text)
+                          #print(id['id'], entity1.text)
                 
         
                           sql_insert_query = """ INSERT INTO `Location`
@@ -77,6 +80,28 @@ with open('guardian-2017.jsonl', 'r') as f:
                           cursor.execute(sql_insert_query, (counter, content['id'], entity1.text))
                           counter += 1
                           connection.commit()
+
+                          Location = entity1.text
+                          sentence = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=PLACE&inputtype=textquery&fields=formatted_address,name,geometry&key=AIzaSyA8ej-FFStbWLpsLNZN74qo9LBGyno2waY'
+                          sentence1 = 'https://us1.locationiq.com/v1/search.php?key=25e9dfb148734f&q=PLACE&format=json'
+                          sentence1 = re.sub(r'\bPLACE\b', Location, sentence1)
+
+                            
+                          time.sleep(0.75)
+                          with urllib.request.urlopen(sentence1) as url:
+                              data = json.loads(url.read().decode('utf-8'))
+                              # [0]represents the index of which location to take
+                              latitude = data[0]['lat']
+                              longitude = (data[0]['lon'])
+                              print(entity1, latitude, longitude)
+
+                              sql_insert_query = """ INSERT INTO `Coordinates`
+                                                (`Counter`, `Location`, `Longitude`, `Latitude`) VALUES (%s, %s, %s, %s)"""
+
+                              #cursor = connection.cursor()
+                              #cursor.execute(sql_insert_query, (counter, entity1.text,data[0]['lon'], data[0]['lat']))
+                              #connection.commit()
+                             
 
         if count == 5:
           break 
