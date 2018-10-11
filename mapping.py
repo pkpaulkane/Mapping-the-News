@@ -14,7 +14,7 @@ connection = mysql.connector.connect(
   host="localhost",
   user="root",
   passwd="Saxophone10",
-  database="sys",
+  database="Mapping",
   auth_plugin="mysql_native_password"
 )
 
@@ -24,15 +24,22 @@ counter = 0
 count = 0
 nlp = spacy.load('en_core_web_sm')
 
-sql_delete_query = """ DELETE FROM `Location`
-                    WHERE article_ID IS NOT NULL"""
+sql_delete_query = """ DELETE FROM `Articles`
+                    WHERE ID IS NOT NULL"""
 
 cursor = connection.cursor() 
 cursor.execute(sql_delete_query)
 connection.commit()
 
-sql_delete_query = """ DELETE FROM `Data1`
-                    WHERE ID IS NOT NULL"""
+sql_delete_query = """ DELETE FROM `Location`
+                    WHERE articleID IS NOT NULL"""
+
+cursor = connection.cursor() 
+cursor.execute(sql_delete_query)
+connection.commit()
+
+sql_delete_query = """ DELETE FROM `Coordinates`
+                    WHERE Counter IS NOT NULL"""
 
 cursor = connection.cursor() 
 cursor.execute(sql_delete_query)
@@ -45,7 +52,7 @@ with open('guardian-2017.jsonl', 'r') as f:
         count += 1
         body = (item['fields']['bodyText'])
 
-        sql_insert_query = """ INSERT INTO `Data1`
+        sql_insert_query = """ INSERT INTO `Articles`
                           (`ID`, `BodyText`, `URL`) VALUES (%s, %s, %s)"""
 
         cursor = connection.cursor()
@@ -72,40 +79,60 @@ with open('guardian-2017.jsonl', 'r') as f:
                      if entity1.label_ in ('GPE'):
                           #print(id['id'], entity1.text)
                 
-        
+                          counts = int(str(count) + str(counter))
+
                           sql_insert_query = """ INSERT INTO `Location`
-                                              (`Count`, `article_ID`,`LocationName`) VALUES (%s, %s, %s)"""
+                                              (`Count`, `articleID`,`LocationName`) VALUES (%s, %s, %s)"""
 
                           cursor = connection.cursor()
                           cursor.execute(sql_insert_query, (counter, content['id'], entity1.text))
                           counter += 1
                           connection.commit()
-
-                          Location = entity1.text
-                          sentence = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=PLACE&inputtype=textquery&fields=formatted_address,name,geometry&key=AIzaSyA8ej-FFStbWLpsLNZN74qo9LBGyno2waY'
-                          sentence1 = 'https://us1.locationiq.com/v1/search.php?key=25e9dfb148734f&q=PLACE&format=json'
-                          sentence1 = re.sub(r'\bPLACE\b', Location, sentence1)
-
-                            
-                          time.sleep(0.75)
-                          with urllib.request.urlopen(sentence1) as url:
-                              data = json.loads(url.read().decode('utf-8'))
-                              # [0]represents the index of which location to take
-                              latitude = data[0]['lat']
-                              longitude = (data[0]['lon'])
-                              print(entity1, latitude, longitude)
-
-                              sql_insert_query = """ INSERT INTO `Coordinates`
-                                                (`Counter`, `Location`, `Longitude`, `Latitude`) VALUES (%s, %s, %s, %s)"""
-
-                              #cursor = connection.cursor()
-                              #cursor.execute(sql_insert_query, (counter, entity1.text,data[0]['lon'], data[0]['lat']))
-                              #connection.commit()
-                             
-
-        if count == 5:
+                    
+        if count == 10:
           break 
-                         
+
+mycursor = connection.cursor()
+
+mycursor.execute("SELECT COUNT(DISTINCT LocationName) FROM Location")
+myresult = mycursor.fetchall()[0]
+
+counting = 0
+
+for x in myresult:
+  print(x)
+
+for z in range(x):
+  #print(z)
+  mycursor = connection.cursor()
+
+  mycursor.execute("SELECT DISTINCT LocationName FROM Location")
+  result = mycursor.fetchall()[z]
+
+  for x in result:
+    print(x)
+      
+    counting += 1
+      
+    countID = int(str(counting) + str(counts))
+
+    sentence1 = 'https://us1.locationiq.com/v1/search.php?key=25e9dfb148734f&q=PLACE&format=json'
+    sentence1 = re.sub(r'\bPLACE\b', x, sentence1)
+
+    time.sleep(0.75)
+    with urllib.request.urlopen(sentence1) as url:
+      data = json.loads(url.read().decode('utf-8'))
+        
+      latitude = data[0]['lat']
+      longitude = (data[0]['lon'])
+
+      sql_insert_query = """ INSERT INTO `Coordinates`
+                    (`Counter`, `Place`, `Longitude`, `Latitude`) VALUES (%s, %s, %s, %s)"""
+
+      cursor = connection.cursor()
+      cursor.execute(sql_insert_query, (counting, x, latitude, longitude))
+      connection.commit()
+                  
                              
                          
 
