@@ -9,6 +9,7 @@ from mysql.connector import errorcode
 import re
 import urllib.request, json
 import time 
+import csv
 
 connection = mysql.connector.connect(
   host="localhost",
@@ -69,27 +70,37 @@ with open('guardian-2017.jsonl', 'r') as f:
 
         entities = nltk.chunk.ne_chunk(tagged)
 
-        for word, tag in tagged: 
-            if tag in ('NNP'):
-                #print((word, tag)) 
+        for entity1 in doc.ents:
+                if entity1.label_ in ('GPE'):
 
-                document = nlp(word)
-
-                for entity1 in document.ents:
-                     if entity1.label_ in ('GPE'):
-                          #print(id['id'], entity1.text)
-                
-                          counts = int(str(count) + str(counter))
-
-                          sql_insert_query = """ INSERT INTO `Location`
+                    with open('countries2.csv', 'r') as ff:
+                        reader2 = csv.reader(ff, delimiter=',')
+                        for row in reader2:
+                            if(entity1.text == row[1] or entity1.text == row[0]):
+                                #print(entity1.text)
+                                sql_insert_query = """ INSERT INTO `Location`
                                               (`Count`, `articleID`,`LocationName`) VALUES (%s, %s, %s)"""
 
-                          cursor = connection.cursor()
-                          cursor.execute(sql_insert_query, (counter, content['id'], entity1.text))
-                          counter += 1
-                          connection.commit()
+                                cursor = connection.cursor()
+                                cursor.execute(sql_insert_query, (counter, content['id'], entity1.text))
+                                counter += 1
+                                connection.commit()
+
+                    with open('world-cities.csv', 'r') as fff:
+                        reader3 = csv.reader(fff, delimiter=',')
+                        for row1 in reader3:
+                            if(entity1.text == row1[0] or entity1.text == row1[2]):
+                                #print(entity1.text)
+
+                                sql_insert_query = """ INSERT INTO `Location`
+                                              (`Count`, `articleID`,`LocationName`) VALUES (%s, %s, %s)"""
+
+                                cursor = connection.cursor()
+                                cursor.execute(sql_insert_query, (counter, content['id'], entity1.text))
+                                counter += 1
+                                connection.commit()
                     
-        if count == 10:
+        if count == 5:
           break 
 
 mycursor = connection.cursor()
@@ -114,8 +125,6 @@ for z in range(x):
       
     counting += 1
       
-    countID = int(str(counting) + str(counts))
-
     sentence1 = 'https://us1.locationiq.com/v1/search.php?key=25e9dfb148734f&q=PLACE&format=json'
     sentence1 = re.sub(r'\bPLACE\b', x, sentence1)
 
