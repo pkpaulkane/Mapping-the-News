@@ -10,6 +10,8 @@ import re
 import urllib.request, json
 import time 
 import csv
+from flask import Flask
+app = Flask(__name__)
 
 connection = mysql.connector.connect(
   host="localhost",
@@ -46,6 +48,12 @@ cursor = connection.cursor()
 cursor.execute(sql_delete_query)
 connection.commit()
 
+filename = "newdata.csv"
+# opening the file with w+ mode truncates the file
+f = open(filename, "w+")
+f.close()
+
+list = []
 
 with open('guardian-2017.jsonl', 'r') as f:
     for item in json_lines.reader(f):
@@ -61,7 +69,7 @@ with open('guardian-2017.jsonl', 'r') as f:
         connection.commit()
 
         text = body
-
+        text = re.sub(r'[^\w\s]',' ',text)
         doc = nlp(text)
 
         tokens = nltk.word_tokenize(text)
@@ -70,28 +78,20 @@ with open('guardian-2017.jsonl', 'r') as f:
 
         entities = nltk.chunk.ne_chunk(tagged)
 
+        
+        
         for entity1 in doc.ents:
                 if entity1.label_ in ('GPE'):
-
-                    with open('countries2.csv', 'r') as ff:
+                    #print(doc)
+                    #print(entity1.text)
+                    
+                    list.append(entity1.text) 
+                    
+                    with open('MappingData.csv', 'r') as ff:
                         reader2 = csv.reader(ff, delimiter=',')
                         for row in reader2:
-                            if(entity1.text == row[1] or entity1.text == row[0]):
+                            if(entity1.text == row[0]):
                                 #print(entity1.text)
-                                sql_insert_query = """ INSERT INTO `Location`
-                                              (`Count`, `articleID`,`LocationName`) VALUES (%s, %s, %s)"""
-
-                                cursor = connection.cursor()
-                                cursor.execute(sql_insert_query, (counter, content['id'], entity1.text))
-                                counter += 1
-                                connection.commit()
-
-                    with open('world-cities.csv', 'r') as fff:
-                        reader3 = csv.reader(fff, delimiter=',')
-                        for row1 in reader3:
-                            if(entity1.text == row1[0] or entity1.text == row1[2]):
-                                #print(entity1.text)
-
                                 sql_insert_query = """ INSERT INTO `Location`
                                               (`Count`, `articleID`,`LocationName`) VALUES (%s, %s, %s)"""
 
@@ -100,8 +100,9 @@ with open('guardian-2017.jsonl', 'r') as f:
                                 counter += 1
                                 connection.commit()
                     
-        if count == 5:
+        if count == 50:
           break 
+#print(list)
 
 mycursor = connection.cursor()
 
@@ -111,22 +112,35 @@ myresult = mycursor.fetchall()[0]
 counting = 0
 
 for x in myresult:
-  print(x)
+  total = x
 
-for z in range(x):
-  #print(z)
+for z in range(total):
+  print(z)
   mycursor = connection.cursor()
 
   mycursor.execute("SELECT DISTINCT LocationName FROM Location")
   result = mycursor.fetchall()[z]
 
-  for x in result:
-    print(x)
+  for places in result:
+    locations = places
+
+    for word in list:
+        if word in locations:
+            list.remove(locations)
+                
+            for words in list:
+                if words in locations:
+                    list.remove(locations)
+            
+            
+
       
     counting += 1
       
     sentence1 = 'https://us1.locationiq.com/v1/search.php?key=25e9dfb148734f&q=PLACE&format=json'
-    sentence1 = re.sub(r'\bPLACE\b', x, sentence1)
+    sentence1 = re.sub(r'\bPLACE\b', places, sentence1)
+
+
 
     time.sleep(0.75)
     with urllib.request.urlopen(sentence1) as url:
@@ -141,8 +155,65 @@ for z in range(x):
       cursor = connection.cursor()
       cursor.execute(sql_insert_query, (counting, x, latitude, longitude))
       connection.commit()
+
+#Removing duplicates fromm list of unknown places
+def Remove(duplicate): 
+    final_list = [] 
+    for num in duplicate: 
+        if num not in final_list: 
+            final_list.append(num) 
+    return final_list 
+      
+# Driver Code 
+removeDuplicates = Remove(list)
+
+with open('newdata.csv', "w") as f:
+    writer = csv.writer(f)
+    for row in removeDuplicates:
+        writer.writerow([row])
+
+@app.route('/greet')
+def map():
+    
+    return '''
+
+<html>
+<head>
+<title>Mapping the News</title>
+</head>
+<h1>Mapping the News</h1>
+<body>
+<div id="Map" style="height:675px"></div>
+<script src="http://openlayers.org/api/OpenLayers.js"></script>
+<script>
+    var lat            = 40;
+    var lon            = 15;
+    var zoom           = 5;
+
+    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+    var position       = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+
+    map = new OpenLayers.Map("Map");
+    var mapnik         = new OpenLayers.Layer.OSM();
+    map.addLayer(mapnik);
+
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    map.addLayer(markers);
+    markers.addMarker(new OpenLayers.Marker(position));
+
+    
+    
+
+    map.setCenter(position, zoom);
+</script>
+</body>
+</html>'''
+
+if __name__ == '__main__':
+   app.run(debug = True,port=8080)
                   
-                             
+                          
                          
 
                 
