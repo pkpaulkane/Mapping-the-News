@@ -11,6 +11,7 @@ import urllib.request, json
 import time 
 import csv
 from flask import Flask
+from flask import render_template
 app = Flask(__name__)
 
 connection = mysql.connector.connect(
@@ -100,7 +101,7 @@ with open('guardian-2017.jsonl', 'r') as f:
                                 counter += 1
                                 connection.commit()
                     
-        if count == 50:
+        if count == 1:
           break 
 #print(list)
 
@@ -153,7 +154,7 @@ for z in range(total):
                     (`Counter`, `Place`, `Longitude`, `Latitude`) VALUES (%s, %s, %s, %s)"""
 
       cursor = connection.cursor()
-      cursor.execute(sql_insert_query, (counting, x, latitude, longitude))
+      cursor.execute(sql_insert_query, (counting, places, latitude, longitude))
       connection.commit()
 
 #Removing duplicates fromm list of unknown places
@@ -172,43 +173,15 @@ with open('newdata.csv', "w") as f:
     for row in removeDuplicates:
         writer.writerow([row])
 
-@app.route('/greet')
+@app.route('/map')
 def map():
-    
-    return '''
-
-<html>
-<head>
-<title>Mapping the News</title>
-</head>
-<h1>Mapping the News</h1>
-<body>
-<div id="Map" style="height:675px"></div>
-<script src="http://openlayers.org/api/OpenLayers.js"></script>
-<script>
-    var lat            = 40;
-    var lon            = 15;
-    var zoom           = 5;
-
-    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
-    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-    var position       = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
-
-    map = new OpenLayers.Map("Map");
-    var mapnik         = new OpenLayers.Layer.OSM();
-    map.addLayer(mapnik);
-
-    var markers = new OpenLayers.Layer.Markers( "Markers" );
-    map.addLayer(markers);
-    markers.addMarker(new OpenLayers.Marker(position));
-
-    
-    
-
-    map.setCenter(position, zoom);
-</script>
-</body>
-</html>'''
+    #lat =  0
+    long = 0
+    mycursor = connection.cursor()
+    mycursor.execute("SELECT Latitude, Longitude from Coordinates")
+    myresult = mycursor.fetchall() 
+    print(myresult)
+    return render_template('map.html', lat = myresult, long = long)
 
 if __name__ == '__main__':
    app.run(debug = True,port=8080)
