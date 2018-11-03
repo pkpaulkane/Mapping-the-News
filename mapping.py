@@ -101,7 +101,7 @@ with open('guardian-2017.jsonl', 'r') as f:
                                 counter += 1
                                 connection.commit()
                     
-        if count == 1:
+        if count == 2:
           break 
 #print(list)
 
@@ -132,7 +132,6 @@ for z in range(total):
             for words in list:
                 if words in locations:
                     list.remove(locations)
-            
             
 
       
@@ -174,14 +173,25 @@ with open('newdata.csv', "w") as f:
         writer.writerow([row])
 
 @app.route('/map')
-def map():
-    #lat =  0
-    long = 0
+def map(): 
+
+    lat = []
+    lon = []
+    url = []
+    place = []  
     mycursor = connection.cursor()
-    mycursor.execute("SELECT Latitude, Longitude from Coordinates")
+    mycursor.execute("SELECT DISTINCT Latitude, Longitude, URL, LocationName FROM Mapping.Location INNER JOIN Mapping.Articles ON  Mapping.Articles.ID = Mapping.Location.articleID INNER JOIN Mapping.Coordinates ON  Mapping.Coordinates.Place = Mapping.Location.LocationName")
+    #mycursor.execute("SELECT Latitude, Longitude, Place, Counter from Coordinates")
     myresult = mycursor.fetchall() 
-    print(myresult)
-    return render_template('map.html', lat = myresult, long = long)
+
+    for row in myresult: 
+        lat.append(row[0])
+        lon.append(row[1])
+        url.append(row[2])
+        place.append(row[3])
+
+
+    return render_template('map4.html', url = url, lat = lat, lon = lon, place = place )
 
 if __name__ == '__main__':
    app.run(debug = True,port=8080)
