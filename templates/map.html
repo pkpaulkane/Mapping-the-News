@@ -94,7 +94,13 @@
         coordPlace = '{{ name | safe }}'   
         place.push(coordPlace)    
     {% endfor %}
-
+   
+    var url2 = "https://en.wikipedia.org/wiki/Nelson's_Column";
+  
+    //alert(lat[0])
+    //alert(lon[0])
+    //alert(site[0])
+    //alert(place[0])
 
     //Loop through the markers array
     for (var i=0; i<lat.length; i++) {
@@ -105,6 +111,8 @@
             {externalGraphic: href = 'https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red.png', graphicHeight: 50, graphicWidth: 40, graphicXOffset:-12, graphicYOffset:-25  }
         ); 
  
+
+        //feature.bindPopup(url[i]);
       vectorLayer.addFeatures(feature);
 
     }                        

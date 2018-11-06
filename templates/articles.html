@@ -1,6 +1,8 @@
 <html>
     <head><title>Mapping the News</title></head>
+    <div id = title style="background-color: #E0E0E0; text-align:left; font-weight:bold"
     <h1>Mapping the News</h1>
+    </div>
     <head>
     <style>
         ul {
@@ -36,6 +38,9 @@
         .active {
             background-color: #89cff0;
         }
+
+        a { text-decoration : none; color : #000; font-size:22; font-weight:bold }
+        
         </style>
         </head>
         <body>
@@ -49,10 +54,11 @@
 
         </ul>
     </body>
-  <body>
-   <div class="articles">
-     <h1>Articles</h1>
-     <p>List of all Articles</p>
+  <body  style="text-align:center; background-color:#E0E0E0">
+   <div id = "p1" class="articles" style="background-color:#E0E0E0">
+     <h2>Articles</h2>
+   </div>
+   <div id = "p2" style="background-color:#E0E0E0" >
      <script>
      var title = [];
      var primaryID = [];
@@ -68,18 +74,15 @@
         title.push(webTitle)    
     {% endfor %}
 
-    {% for site in url %}
-        coordSite = '{{ site }}'
-        url.push(coordSite)    
-    {% endfor %}
 
-    
     for (var i=0; i<title.length; i++) {
+        link = "http://127.0.0.1:8080/map?PrimaryID=" + primaryID[i]
+ 
+        document.write('<a href=' + link + '>' + title[i] + '<br /></a>')
 
-    document.write('<a href="' + url[i] + '">' + title[i] + '<br /></a>')
   }
-
-     
+    document.getElementById("p1").style.fontSize = 20;   
+    document.getElementById("title").style.fontSize = 40; 
      </script>
    </div>
   </body>
