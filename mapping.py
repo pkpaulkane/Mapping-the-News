@@ -25,23 +25,6 @@ connection = mysql.connector.connect(
 
 print(connection)
 
-
-@app.route('/articles/')
-def articles():
-
-    title = []
-    primaryID = []  
-    url = []
-
-    mycursor = connection.cursor()
-    mycursor.execute("SELECT Distinct Title, PrimaryID, url  FROM Mapping.Articles order by Title ASC")
-    myresult = mycursor.fetchall() 
-
-    for row in myresult: 
-        title.append(row[0])
-        primaryID.append(row[1])
-        url.append(row[2])
-    return render_template('articles.html', title = title, primaryID = primaryID, url =url )
     
 @app.route('/map')
 def map(): 
@@ -67,18 +50,24 @@ def map():
 
     return render_template('map.html', PrimaryID = PrimaryID, title = title, url = url, lat = lat, lon = lon, place = place)
 
-@app.route('/business/')
-def business():
-    return render_template('business.html')
 
-@app.route('/entertainmemt/')
-def entertainment():
-    return render_template('entertainment.html')
 
-@app.route('/politics')
-def politics():
+@app.route('/home')
+def home():
 
-    return render_template('politics.html')
+    title = []
+    primaryID = []  
+    url = []
+
+    mycursor = connection.cursor()
+    mycursor.execute("SELECT Distinct Title, PrimaryID, url  FROM Mapping.Articles order by Title ASC")
+    myresult = mycursor.fetchall() 
+
+    for row in myresult: 
+        title.append(row[0])
+        primaryID.append(row[1])
+        url.append(row[2])
+    return render_template('home.html', title = title, primaryID = primaryID, url =url )
 
 if __name__ == '__main__':
    app.run(debug = True,port=8080)

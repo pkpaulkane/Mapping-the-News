@@ -1,0 +1,183 @@
+<html>
+    <head><title>Mapping the News</title></head>
+    <h1>Mapping the News</h1>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+        body {
+            font: 400 15px/1.8 Lato, sans-serif;
+            color: #777;
+        }
+        ul {
+            width: 100%;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        
+        li {
+            float: left;
+            border-right:1px solid #bbb;
+        }
+        
+        li:last-child {
+            border-right: none;
+        }
+        
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        
+        li a:hover:not(.active) {
+            background-color: #B5D3E7;
+        }
+        
+        .active {
+            background-color: #89cff0;
+        }
+        .thumbnail {
+            padding: 0 0 30px 0;
+            border: none;
+            border-radius: 0;
+        }
+        .thumbnail p {
+            margin-top: 15px;
+            color: #555;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #f1f1f1;
+            border-radius: 0;
+            transition: .2s;
+        }
+        .btn:hover, .btn:focus {
+            border: 1px solid #333;
+            background-color: #fff;
+            color: #000;
+        }
+
+   
+
+        .hidden{
+            display:none;
+        }
+        
+        .unhidden{
+            display:block;
+        }
+  
+
+        </style>
+        </head>
+        <body>
+        
+        <ul>
+          <li><a class = "active" href = "{{ url_for('home') }}">Home</a></li>
+          <li><a class="map" href="{{ url_for('map') }}">Map</a></li>
+          
+
+        </ul>
+    </body>
+  <body>
+    <a> <br/> </a>
+   <div class="row text-center" id = "myDIV">
+    <a> <br/> </a>
+    <div class="col-sm-4">
+      <div class="thumbnail">
+        <img src="https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red.png"  width="200" height="100">
+        <a> <br/> </a>
+        <button class="btn" data-toggle="modal" data-target="#myModal" onclick="myFunction()">Articles</button>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="thumbnail">
+        <img src="https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red.png" width="200" height="100">
+        <a> <br/> </a>
+        <button class="btn" data-toggle="modal" data-target="#myModal">Entertainment</button>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="thumbnail">
+        <img src="https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red.png" width="200" height="100">
+        <a> <br/> </a>
+        <button class="btn" data-toggle="modal" data-target="#myModal">Sport</button>
+      </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="thumbnail">
+            <img src="https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red.png"  width="200" height="100">
+            <a> <br/> </a>
+            <button class="btn" data-toggle="modal" data-target="#myModal">Business</button>
+        </div>
+        </div>
+        <div class="col-sm-4">
+        <div class="thumbnail">
+            <img src="https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red.png" width="200" height="100">
+            <a> <br/> </a>
+            <button class="btn" data-toggle="modal" data-target="#myModal">Politics</button>
+        </div>
+        </div>
+        <div class="col-sm-4">
+        <div class="thumbnail">
+            <img src="https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red.png" width="200" height="100">
+            <a> <br/> </a>
+            <button class="btn" data-toggle="modal" data-target="#myModal">Technology</button>
+        </div>
+        </div>
+  </div>
+  <div id = "div2" class = hidden >
+    <script>
+            var title = [];
+            var primaryID = [];
+            var url = [];
+        
+            {% for id in primaryID %}
+                articleID = {{ id| safe }}
+                primaryID.push(articleID)    
+            {% endfor %}
+        
+            {% for name in title %}
+                webTitle = '{{ name }}'
+                title.push(webTitle)    
+            {% endfor %}
+        
+        
+            for (var i=0; i<title.length; i++) {
+                link = "http://127.0.0.1:8080/map?PrimaryID=" + primaryID[i]
+        
+                document.write('<a href=' + link + '>' + title[i] + '<br /></a>')
+        
+            }
+            document.getElementById("p1").style.fontSize = 20;   
+            document.getElementById("title").style.fontSize = 40; 
+            </script>
+  </div>
+  </body>
+  <script>
+      function myFunction() {
+    var x = document.getElementById("myDIV");
+    var y = document.getElementById("div2");
+    
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+
+    y.className = "unhidden";
+}
+  </script>
+</html>

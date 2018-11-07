@@ -41,11 +41,9 @@
     <body>
     
     <ul>
-      <li><a class = "articles" href="{{ url_for('articles') }}">Articles</a></li>
+      <li><a class = "politics" href = "{{ url_for('home') }}">Home</a></li>
       <li><a class="active" href="{{ url_for('map') }}">Map</a></li>
-      <li><a class = "entertainment" href = "{{ url_for('entertainment') }}">Entertainment</a></li>
-      <li><a class = "business" href = "{{ url_for('business') }}">Business</a></li>
-      <li><a class = "politics" href = "{{ url_for('politics') }}">Politics</a></li>
+
       
     </ul>
     
@@ -95,12 +93,6 @@
         place.push(coordPlace)    
     {% endfor %}
    
-    var url2 = "https://en.wikipedia.org/wiki/Nelson's_Column";
-  
-    //alert(lat[0])
-    //alert(lon[0])
-    //alert(site[0])
-    //alert(place[0])
 
     //Loop through the markers array
     for (var i=0; i<lat.length; i++) {
