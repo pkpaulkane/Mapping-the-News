@@ -1,0 +1,36 @@
+<html>
+  <head><title>Mapping the News</title></head>
+  <h1>Mapping the News</h1>
+
+    <body>
+    
+    
+    </body>
+  <body>
+  <div id="mapdiv" style="float: left; width: 100%; height: 100%; ">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
+  <script>
+
+    
+    map = new OpenLayers.Map("mapdiv");
+    map.addLayer(new OpenLayers.Layer.OSM());
+    
+    epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
+    projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
+   
+    var lonLat = new OpenLayers.LonLat( -0.21279688 ,21.5077286 ).transform(epsg4326, projectTo);
+          
+    var zoom=4;
+    map.setCenter (lonLat, zoom);
+ 
+ 
+
+   
+
+
+  </script>
+  </div>
+</body>
+</html>
+    
