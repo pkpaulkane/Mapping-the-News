@@ -1,0 +1,145 @@
+<html>
+  <head><title>Mapping the News</title></head>
+  <h1>Mapping the News</h1>
+  <head>
+    <style>
+
+    ul {
+        width: 100%;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
+    
+    li {
+        float: left;
+        border-right:1px solid #bbb;
+    }
+    
+    li:last-child {
+        border-right: none;
+    }
+    
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+    
+    li a:hover:not(.active) {
+        background-color: #B5D3E7;
+    }
+    
+    .active {
+        background-color: #89cff0;
+    }
+
+    .related {
+            position: absolute;
+            right: 1%;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #f1f1f1;
+            border-radius: 0;
+            transition: .2s;
+        }
+    </style>
+    </head>
+  
+  <body>
+  <div id="mapdiv" style="float: left; width: 100%; height: 100%; ">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
+  <html>
+        <head><title>Mapping the News</title></head>
+        <head>
+          <style>
+      
+      ul {
+        width: 100%;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+        }
+        li {
+        float: left;
+        border-right:1px solid #bbb;
+        }
+        li:last-child {
+        border-right: none;
+        }
+        li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        }
+        li a:hover:not(.active) {
+        background-color: #B5D3E7;
+        }
+
+        .active {
+            background-color: #89cff0;
+        }
+      
+          .related {
+                  position: absolute;
+                  right: 1%;
+                  padding: 10px 20px;
+                  background-color: #333;
+                  color: #f1f1f1;
+                  border-radius: 0;
+                  transition: .2s;
+              }
+          </style>
+          </head>
+          <body>
+            <ul>
+            <li><a class = "politics" href = "{{ url_for('home') }}">Home</a></li>
+            <li><a class="map" href="{{ url_for('map') }}">Map</a></li>
+            <li><a class="active" href="{{ url_for('rank') }}">Rank</a></li>
+
+            </ul>
+        </body>
+        <body>
+        <div id="mapdiv" align = "center" style="float: left; width: 100%; height: 100%; font-size:200%;">
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
+        <script>
+                var country = []
+                
+                {% for place in country %}
+                placeName = '{{ place }}'
+                country.push(placeName)
+                {% endfor %}
+
+                for (var i=0; i<country.length; i++) { 
+                    
+                    //document.write(country[i] + '<br />')
+                    link = "http://127.0.0.1:8080/details?Location=" + country[i]
+        
+                    document.write('<a href=' + link + '>' + country[i] + ' ' + '<br /></a>')
+                }
+
+ 
+                
+        </script>
+        </div>
+      </body>
+      
+      </html>
+          
+  </div>
+
+
+
+
+</html>
+    

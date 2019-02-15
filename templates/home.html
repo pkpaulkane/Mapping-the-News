@@ -10,40 +10,37 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <style>
+
         body {
             font: 400 15px/1.8 Lato, sans-serif;
             color: #777;
         }
         ul {
-            width: 100%;
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #333;
+        width: 100%;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
         }
-        
         li {
-            float: left;
-            border-right:1px solid #bbb;
+        float: left;
+        border-right:1px solid #bbb;
         }
-        
         li:last-child {
-            border-right: none;
+        border-right: none;
         }
-        
         li a {
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
         }
-        
         li a:hover:not(.active) {
-            background-color: #B5D3E7;
+        background-color: #B5D3E7;
         }
-        
+
         .active {
             background-color: #89cff0;
         }
@@ -51,6 +48,9 @@
             padding: 0 0 30px 0;
             border: none;
             border-radius: 0;
+            bottom: 100;
+            right: 0;
+            width: 300px;
         }
         .thumbnail p {
             margin-top: 15px;
@@ -69,7 +69,13 @@
             color: #000;
         }
 
-   
+        div.fixed {
+            position: fixed;
+            bottom: 100;
+            right: 0;
+            width: 300px;
+            border: 3px solid #73AD21;
+        }
 
         .hidden{
             display:none;
@@ -78,71 +84,70 @@
         .unhidden{
             display:block;
         }
-  
+
 
         </style>
         </head>
         <body>
-        
-        <ul>
-          <li><a class = "active" href = "{{ url_for('home') }}">Home</a></li>
-          <li><a class="map" href="{{ url_for('map') }}">Map</a></li>
-          
-
-        </ul>
-    </body>
+            <ul>
+            <li><a class = "active" href = "{{ url_for('home') }}">Home</a></li>
+            <li><a class="map" href="{{ url_for('map') }}">Map</a></li>
+            <li><a class="rank" href="{{ url_for('rank') }}">Rank</a></li>
+            </ul>
+        </body>
   <body>
     <a> <br/> </a>
-   <div class="row text-center" id = "myDIV">
+   <div class="row-text-center" id = "myDIV" align = "center">
     <a> <br/> </a>
-    <div class="col-sm-4">
+    <div class="col-lg-4">
       <div class="thumbnail">
-        <img src="https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red.png"  width="200" height="100">
+        <img src="/static/articles.png"  width="200" height="100">
         <a> <br/> </a>
-        <button class="btn" data-toggle="modal" data-target="#myModal" onclick="myFunction()">Articles</button>
+        <button class="btn" data-toggle="modal" data-target="#myModal" onclick="articles()">Articles</button>
       </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-lg-4">
       <div class="thumbnail">
-        <img src="https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red.png" width="200" height="100">
+        <img src="/static/entertainment.png" width="200" height="100">
         <a> <br/> </a>
-        <button class="btn" data-toggle="modal" data-target="#myModal">Entertainment</button>
+        <button class="btn" data-toggle="modal" data-target="#myModal" onclick="entertainment()">Entertainment</button>
       </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-lg-4">
       <div class="thumbnail">
-        <img src="https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red.png" width="200" height="100">
+        <img src="/static/sport.png" width="200" height="100">
         <a> <br/> </a>
-        <button class="btn" data-toggle="modal" data-target="#myModal">Sport</button>
+        <button class="btn" data-toggle="modal" data-target="#myModal" onclick="sport()">Sport</button>
       </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-lg-4">
         <div class="thumbnail">
-            <img src="https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red.png"  width="200" height="100">
+            <img src="/static/business.png"  width="200" height="100">
             <a> <br/> </a>
-            <button class="btn" data-toggle="modal" data-target="#myModal">Business</button>
+            <button class="btn" data-toggle="modal" data-target="#myModal" onclick="business()">Business</button>
         </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-lg-4">
         <div class="thumbnail">
-            <img src="https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red.png" width="200" height="100">
+            <img src="/static/politics.jpg" width="200" height="100">
             <a> <br/> </a>
-            <button class="btn" data-toggle="modal" data-target="#myModal">Politics</button>
+            <button class="btn" data-toggle="modal" data-target="#myModal" onclick="politics()">Politics</button>
         </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-lg-4">
         <div class="thumbnail">
-            <img src="https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red.png" width="200" height="100">
+            <img src="/static/tech.png" width="200" height="100">
             <a> <br/> </a>
-            <button class="btn" data-toggle="modal" data-target="#myModal">Technology</button>
+            <button class="btn" data-toggle="modal" data-target="#myModal" onclick="technology()">Technology</button>
         </div>
         </div>
   </div>
-  <div id = "div2" class = hidden >
+  <div id = "Articles" class = hidden align = "center" style="font-size:200%;" >
     <script>
             var title = [];
             var primaryID = [];
             var url = [];
+            var labels = [];
         
             {% for id in primaryID %}
                 articleID = {{ id| safe }}
@@ -153,23 +158,251 @@
                 webTitle = '{{ name }}'
                 title.push(webTitle)    
             {% endfor %}
-        
-        
+
+            {% for category in labels %}
+                labelTitle = '{{ category }}'
+                labels.push(labelTitle)    
+            {% endfor %}
+
+
             for (var i=0; i<title.length; i++) {
                 link = "http://127.0.0.1:8080/map?PrimaryID=" + primaryID[i]
         
-                document.write('<a href=' + link + '>' + title[i] + '<br /></a>')
+                document.write('<a href=' + link + '>' + title[i] + ' ' + '<br /></a>')
         
             }
-            document.getElementById("p1").style.fontSize = 20;   
-            document.getElementById("title").style.fontSize = 40; 
+ 
+            </script>
+  </div>
+  <div id = "Sport" class = hidden style="font-size:200%;" >
+    <script>
+            var title = [];
+            var primaryID = [];
+            var url = [];
+            var labels = [];
+        
+            {% for id in primaryID %}
+                articleID = {{ id| safe }}
+                primaryID.push(articleID)    
+            {% endfor %}
+        
+            {% for name in title %}
+                webTitle = '{{ name }}'
+                title.push(webTitle)    
+            {% endfor %}
+
+            {% for category in labels %}
+                labelTitle = '{{ category }}'
+                labels.push(labelTitle)    
+            {% endfor %}
+
+            for (var i=0; i<title.length; i++) {
+                link = "http://127.0.0.1:8080/map?PrimaryID=" + primaryID[i]
+
+                if(labels[i] == 'sport')
+                    document.write('<a href=' + link + '>' + title[i] + ' ' +  '<br /></a>')
+        
+            }
+ 
+            </script>
+  </div>
+  <div id = "Entertainment" class = hidden style="font-size:200%;">
+    <script>
+            var title = [];
+            var primaryID = [];
+            var url = [];
+            var labels = [];
+        
+            {% for id in primaryID %}
+                articleID = {{ id| safe }}
+                primaryID.push(articleID)    
+            {% endfor %}
+        
+            {% for name in title %}
+                webTitle = '{{ name }}'
+                title.push(webTitle)    
+            {% endfor %}
+
+            {% for category in labels %}
+                labelTitle = '{{ category }}'
+                labels.push(labelTitle)    
+            {% endfor %}
+
+            for (var i=0; i<title.length; i++) {
+                link = "http://127.0.0.1:8080/map?PrimaryID=" + primaryID[i]
+
+                if(labels[i] == 'entertainment')
+                    document.write('<a href=' + link + '>' + title[i] + ' '  + '<br /></a>')
+        
+            }
+ 
+            </script>
+  </div>
+  <div id = "Business" class = hidden style="font-size:200%;">
+    <script>
+            var title = [];
+            var primaryID = [];
+            var url = [];
+            var labels = [];
+        
+            {% for id in primaryID %}
+                articleID = {{ id| safe }}
+                primaryID.push(articleID)    
+            {% endfor %}
+        
+            {% for name in title %}
+                webTitle = '{{ name }}'
+                title.push(webTitle)    
+            {% endfor %}
+
+            {% for category in labels %}
+                labelTitle = '{{ category }}'
+                labels.push(labelTitle)    
+            {% endfor %}
+
+            for (var i=0; i<title.length; i++) {
+                link = "http://127.0.0.1:8080/map?PrimaryID=" + primaryID[i]
+
+                if(labels[i] == 'business')
+                    document.write('<a href=' + link + '>' + title[i] + ' ' + '<br /></a>')
+        
+            }
+ 
+            </script>
+  </div>
+  <div id = "Technology" class = hidden style="font-size:200%;">
+    <script>
+            var title = [];
+            var primaryID = [];
+            var url = [];
+            var labels = [];
+        
+            {% for id in primaryID %}
+                articleID = {{ id| safe }}
+                primaryID.push(articleID)    
+            {% endfor %}
+        
+            {% for name in title %}
+                webTitle = '{{ name }}'
+                title.push(webTitle)    
+            {% endfor %}
+
+            {% for category in labels %}
+                labelTitle = '{{ category }}'
+                labels.push(labelTitle)    
+            {% endfor %}
+
+            for (var i=0; i<title.length; i++) {
+                link = "http://127.0.0.1:8080/map?PrimaryID=" + primaryID[i]
+
+                if(labels[i] == 'tech')
+                    document.write('<a href=' + link + '>' + title[i] + ' '  + '<br /></a>')
+        
+            }
+ 
+            </script>
+  </div>
+  <div id = "Politics" class = hidden style="font-size:200%;">
+    <script>
+            var title = [];
+            var primaryID = [];
+            var url = [];
+            var labels = [];
+        
+            {% for id in primaryID %}
+                articleID = {{ id| safe }}
+                primaryID.push(articleID)    
+            {% endfor %}
+        
+            {% for name in title %}
+                webTitle = '{{ name }}'
+                title.push(webTitle)    
+            {% endfor %}
+
+            {% for category in labels %}
+                labelTitle = '{{ category }}'
+                labels.push(labelTitle)    
+            {% endfor %}
+
+            for (var i=0; i<title.length; i++) {
+                link = "http://127.0.0.1:8080/map?PrimaryID=" + primaryID[i]
+
+                if(labels[i] == 'politics')
+                    document.write('<a href=' + link + '>' + title[i] + ' ' + '<br /></a>')
+        
+            }
+ 
             </script>
   </div>
   </body>
   <script>
-      function myFunction() {
+      function articles() {
     var x = document.getElementById("myDIV");
-    var y = document.getElementById("div2");
+    var y = document.getElementById("Articles");
+    
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+
+    y.className = "unhidden";
+}
+
+      function sport() {
+    var x = document.getElementById("myDIV");
+    var y = document.getElementById("Sport");
+    
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+
+    y.className = "unhidden";
+}
+
+      function entertainment() {
+    var x = document.getElementById("myDIV");
+    var y = document.getElementById("Entertainment");
+    
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+
+    y.className = "unhidden";
+}
+function business() {
+    var x = document.getElementById("myDIV");
+    var y = document.getElementById("Business");
+    
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+
+    y.className = "unhidden";
+}
+
+    function technology() {
+    var x = document.getElementById("myDIV");
+    var y = document.getElementById("Technology");
+    
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+
+    y.className = "unhidden";
+}
+
+      function politics() {
+    var x = document.getElementById("myDIV");
+    var y = document.getElementById("Politics");
     
     if (x.style.display === "none") {
         x.style.display = "block";

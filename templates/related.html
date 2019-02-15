@@ -1,0 +1,519 @@
+<html>
+    <head><title>Mapping the News</title></head>
+    <h1>Mapping the News</h1>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+                ul {
+        width: 100%;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+        }
+        li {
+        float: left;
+        border-right:1px solid #bbb;
+        }
+        li:last-child {
+        border-right: none;
+        }
+        li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        }
+        li a:hover:not(.active) {
+        background-color: #B5D3E7;
+        }
+        .active {
+        background-color: #89cff0;
+        }
+
+        body{
+    font-family: 'Droid Serif', serif;
+    font-size: 14px;
+    color: #2f2f2f;
+    background-color: #f9f7f1;
+}
+header{
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 80px;
+    text-transform: uppercase;
+    display: inline-block;
+    line-height: 72px;
+    margin-bottom: 20px;
+
+}
+p{
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+.head{
+    text-align: center;
+    position: relative;
+
+
+}
+
+.headerobjectswrapper{
+}
+
+.subhead{
+    text-transform: uppercase;
+    border-bottom: 2px solid #2f2f2f;
+    border-top: 2px solid #2f2f2f;
+    padding: 12px 0 12px 0;
+
+}
+.weatherforcastbox{
+    position: relative;
+    width: 12%;
+    left: 10px;
+    border: 3px double #2f2f2f;
+    padding: 10px 15px 10px 15px;
+    line-height: 20px;
+    display: inline-block;
+    margin: 0 50px 20px -360px;
+}
+.content{
+    font-size: 0;
+    line-height: 0;
+    word-spacing: -.31em;
+    display: inline-block;
+    margin: 30px 2% 0 2%;
+
+
+}
+.collumns{
+
+}
+
+.collumn{
+    font-size: 14px;
+    line-height: 20px;
+    width: 17.5%;
+    display: inline-block;
+    padding: 0 1% 0 1%;
+    vertical-align: top;
+    margin-bottom: 50px;
+    transition: all .7s;
+}
+.collumn + .collumn { 
+  border-left: 1px solid #2f2f2f;
+}
+.collumn .headline{
+    text-align: center;
+    line-height: normal;
+    font-family: 'Playfair Display', serif;
+    display: block;
+    margin: 0 auto;
+
+
+}
+.collumn .headline.hl1{
+    font-weight: 700;
+    font-size: 30px;
+    text-transform: uppercase;
+    padding: 10px 0 10px 0;
+
+}
+
+.collumn .headline.hl2{
+    font-weight: 400;
+    font-style: italic;
+    font-size: 24px;
+    box-sizing: border-box;
+    padding: 10px 0 10px 0;
+}
+
+.collumn .headline.hl2:before{
+    border-top: 1px solid #2f2f2f;
+    content: '';
+    width: 100px;
+    height: 7px;
+    display: block;
+    margin: 0 auto;
+}
+.collumn .headline.hl2:after{
+    border-bottom: 1px solid #2f2f2f;
+    content: '';
+    width: 100px;
+    height: 13px;
+    display: block;
+    margin: 0 auto;
+
+}
+
+.collumn .headline.hl3{
+    font-weight: 400;
+    font-style: italic;
+    font-size: 36px;
+    box-sizing: border-box;
+    padding: 10px 0 10px 0;
+}
+.collumn .headline.hl4{
+    font-weight: 700;
+    font-size: 12px;
+    box-sizing: border-box;
+    padding: 10px 0 10px 0;
+}
+.collumn .headline.hl4:before{
+    border-top: 1px solid #2f2f2f;
+    content: '';
+    width: 100px;
+    height: 7px;
+    display: block;
+    margin: 0 auto;
+}
+.collumn .headline.hl4:after{
+    border-bottom: 1px solid #2f2f2f;
+    content: '';
+    width: 100px;
+    height: 10px;
+    display: block;
+    margin: 0 auto;
+
+}
+
+.collumn .headline.hl5{
+    font-weight: 400;
+    font-size: 42px;
+    text-transform: uppercase;
+    font-style: italic;
+    box-sizing: border-box;
+    padding: 10px 0 10px 0;
+}
+.collumn .headline.hl6{
+    font-weight: 400;
+    font-size: 18px;
+    box-sizing: border-box;
+    padding: 10px 0 10px 0;
+}
+.collumn .headline.hl6:before{
+    border-top: 1px solid #2f2f2f;
+    content: '';
+    width: 100px;
+    height: 7px;
+    display: block;
+    margin: 0 auto;
+}
+.collumn .headline.hl6:after{
+    border-bottom: 1px solid #2f2f2f;
+    content: '';
+    width: 100px;
+    height: 10px;
+    display: block;
+    margin: 0 auto;
+
+}
+.collumn .headline.hl7{
+    font-weight: 700;
+    font-size: 12px;
+    box-sizing: border-box;
+    display: block;
+    padding: 10px 0 10px 0;
+}
+.collumn .headline.hl8{
+    font-weight: 700;
+    font-size: 12px;
+    box-sizing: border-box;
+    padding: 10px 0 10px 0;
+}
+.collumn .headline.hl9{
+    font-weight: 700;
+    font-size: 12px;
+    box-sizing: border-box;
+    padding: 10px 0 10px 0;
+}
+.collumn .headline.hl10{
+    font-weight: 700;
+    font-size: 12px;
+    box-sizing: border-box;
+    padding: 10px 0 10px 0;
+}
+.collumn .citation{
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    line-height: 44px;
+    /*font-style: italic;*/
+    text-align: center;
+    font-weight: 400;
+    display: block;
+    margin: 40px 0 40px 0;
+    font-feature-settings: "liga", "dlig";
+
+}
+.collumn .citation:before{
+    border-top: 1px solid #2f2f2f;
+    content: '';
+    width: 100px;
+    height: 16px;
+    display: block;
+    margin: 0 auto;
+}
+.collumn .citation:after{
+    border-bottom: 1px solid #2f2f2f;
+    content: '';
+    width: 100px;
+    height: 16px;
+    display: block;
+    margin: 0 auto;
+}
+.collumn .figure {
+	  margin: 0 0 20px;
+}
+.collumn .figcaption{
+	font-style: italic;
+	font-size: 12px;
+}
+.media {
+    -webkit-filter: sepia(80%) contrast(1) opacity(0.8);
+    filter: sepia(80%) grayscale(1) contrast(1) opacity(0.8);
+    mix-blend-mode: multiply;
+    width: 100%;
+}
+
+  
+
+        .map1 {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #f1f1f1;
+            border-radius: 0;
+            transition: .2s;
+        }
+
+        .map2 {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #f1f1f1;
+            border-radius: 0;
+            transition: .2s;
+        }
+
+        .map3 {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #f1f1f1;
+            border-radius: 0;
+            transition: .2s;
+        }
+
+        .map4 {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #f1f1f1;
+            border-radius: 0;
+            transition: .2s;
+        }
+
+        .map5 {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #f1f1f1;
+            border-radius: 0;
+            transition: .2s;
+        }
+}
+
+        </style>
+        </head>
+
+
+        <head>
+                <link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic|Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+                <link rel="stylesheet" href="styles/newspaper.css">
+                <title>Newspaper Style Design Experiment</title>
+                <meta name="viewport" content="width=device-width">
+            <body>
+            <ul>
+            <li><a class = "politics" href = "{{ url_for('home') }}">Home</a></li>
+            <li><a class="map" href="{{ url_for('map') }}">Map</a></li>
+            <li><a class="rank" href="{{ url_for('rank') }}">Rank</a></li>
+            <li><a class="active" href="{{ url_for('related') }}">Related Articles</a></li>
+
+            </ul>
+            </body>
+            </head>
+            <body align = "center">
+            <div class="head">
+                <div class="headerobjectswrapper">
+                    <header><p id="para"></p></header>
+                </div>
+            
+                <div class="subhead" id = "date"></div>
+            </div>
+            <div class="content">
+                <div class="collumns">
+                    <div class="collumn">
+                        <div class="head"><span class="headline hl3" id = "headline1"></span><button class = "map1" onclick="MapMe();">Map Me</button></div>
+                        
+                       </div>
+                    <div class="collumn">
+                        <div class="head"><span class="headline hl5" id = "headline2"></span><button class = "map2" onclick="MapMe1();">Map Me</button></div>
+                        </div>
+                    <div class="collumn"><div class="head"><span class="headline hl1" id = "headline3"></span><button class = "map3" onclick="MapMe2();">Map Me</button></div>
+                       </div>
+                    <div class="collumn"><div class="head"><span class="headline hl3" id = "headline4"></span><button class = "map4" onclick="MapMe3();">Map Me</button></div>
+                    </div>
+                    <div class="collumn"><div class="head"><span class="headline hl1" id = "headline5"></span><button class = "map5" onclick="MapMe4();">Map Me</button></div>
+                </div>
+            </div>
+            
+            </body>
+       
+        <script>
+
+var str = 'Related Articles';
+document.getElementById('para').innerHTML = str;
+
+n =  new Date();
+y = n.getFullYear();
+m = n.getMonth() + 1;
+d = n.getDate();
+//document.getElementById("date").innerHTML = d + "/" + m + "/" + y;
+document.getElementById("date").innerHTML = "UCD, Belfield " + n.toLocaleString();
+
+                var artID = [];
+                var artTitle = [];
+        
+                {% for name in artTitle %}
+                    webTitle = '{{ name }}'
+                    artTitle.push(webTitle)    
+                {% endfor %}
+    
+                {% for id in artID %}
+                    labelTitle = '{{ id }}'
+                    artID.push(labelTitle)    
+                {% endfor %}
+
+    
+                for (var i=0; i<artTitle.length; i++) {
+                    link = "http://127.0.0.1:8080/map?PrimaryID=" + artID[i]
+                    
+                    var str1 = artTitle[i];
+                    document.getElementById('headline1').innerHTML = str1;
+                }
+
+                function MapMe(){
+                    window.location= link;
+                }
+
+                var artID1 = [];
+                var artTitle1 = [];
+        
+                {% for name1 in artTitle1 %}
+                    webTitle1 = '{{ name1 }}'
+                    artTitle1.push(webTitle1)    
+                {% endfor %}
+    
+                {% for id1 in artID1 %}
+                    labelTitle1 = '{{ id1 }}'
+                    artID1.push(labelTitle1)    
+                {% endfor %}
+
+    
+                for (var i=0; i<artTitle1.length; i++) {
+                    link1 = "http://127.0.0.1:8080/map?PrimaryID=" + artID1[i]
+                    
+                    var str2 = artTitle1[i];
+                    document.getElementById('headline2').innerHTML = str2;
+                }
+
+                function MapMe1(){
+                    window.location= link1;
+                }
+
+                var artID2 = [];
+                var artTitle2 = [];
+        
+                {% for name2 in artTitle2 %}
+                    webTitle2 = '{{ name2 }}'
+                    artTitle2.push(webTitle2)    
+                {% endfor %}
+    
+                {% for id2 in artID2 %}
+                    labelTitle2 = '{{ id2 }}'
+                    artID2.push(labelTitle2)    
+                {% endfor %}
+
+    
+                for (var i=0; i<artTitle2.length; i++) {
+                    link2 = "http://127.0.0.1:8080/map?PrimaryID=" + artID2[i]
+                    
+                    var str3 = artTitle2[i];
+                    document.getElementById('headline3').innerHTML = str3;
+                }
+
+                function MapMe2(){
+                    window.location= link2;
+                }
+
+                var artID3 = [];
+                var artTitle3 = [];
+        
+                {% for name3 in artTitle3 %}
+                    webTitle3 = '{{ name3 }}'
+                    artTitle3.push(webTitle3)    
+                {% endfor %}
+    
+                {% for id3 in artID3 %}
+                    labelTitle3 = '{{ id3 }}'
+                    artID3.push(labelTitle3)    
+                {% endfor %}
+
+    
+                for (var i=0; i<artTitle3.length; i++) {
+                    link3 = "http://127.0.0.1:8080/map?PrimaryID=" + artID3[i]
+                    
+                    var str4 = artTitle3[i];
+                    document.getElementById('headline4').innerHTML = str4;
+                }
+
+                function MapMe3(){
+                    window.location= link3;
+                }
+
+                var artID4 = [];
+                var artTitle4 = [];
+        
+                {% for name4 in artTitle4 %}
+                    webTitle4 = '{{ name4 }}'
+                    artTitle4.push(webTitle4)    
+                {% endfor %}
+    
+                {% for id4 in artID4 %}
+                    labelTitle4 = '{{ id4 }}'
+                    artID4.push(labelTitle4)    
+                {% endfor %}
+
+    
+                for (var i=0; i<artTitle4.length; i++) {
+                    link4 = "http://127.0.0.1:8080/map?PrimaryID=" + artID4[i]
+                    
+                    var str5 = artTitle4[i];
+                    document.getElementById('headline5').innerHTML = str5;
+                }
+
+                function MapMe4(){
+                    window.location= link4;
+                }
+
+
+
+
+     
+                </script>
+      </div>
+</html>

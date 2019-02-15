@@ -10,8 +10,10 @@ import re
 import urllib.request, json
 import time 
 import csv
+import pickle
 from flask import Flask
 from flask import render_template
+import heapq
 app = Flask(__name__)
 
 connection = mysql.connector.connect(
@@ -62,13 +64,14 @@ with open('guardian-2017.jsonl', 'r') as f:
         count += 1
         body = (item['fields']['bodyText'])
         title = (content['webTitle'])
-        print(title)
+        sectionID = content['sectionId']
+        print(count)
 
         sql_insert_query = """ INSERT INTO `Articles`
-                          (`ID`, `BodyText`, `URL`, `Title`, `PrimaryID`) VALUES (%s, %s, %s, %s, %s)"""
+                          (`ID`, `BodyText`, `URL`, `Title`, `PrimaryID`, `sectionID`) VALUES (%s, %s, %s, %s, %s, %s)"""
 
         cursor = connection.cursor()
-        cursor.execute(sql_insert_query, (content['id'], content['fields']['bodyText'],content['webUrl'], content['webTitle'], count ))
+        cursor.execute(sql_insert_query, (content['id'], content['fields']['bodyText'],content['webUrl'], content['webTitle'], count, sectionID ))
         connection.commit()
 
         text = body
@@ -80,9 +83,7 @@ with open('guardian-2017.jsonl', 'r') as f:
         tagged = nltk.pos_tag(tokens)
 
         entities = nltk.chunk.ne_chunk(tagged)
-
-        
-        
+                
         for entity1 in doc.ents:
                 if entity1.label_ in ('GPE'):
                     #print(doc)
@@ -103,9 +104,11 @@ with open('guardian-2017.jsonl', 'r') as f:
                                 counter += 1
                                 connection.commit()
                     
-        if count == 50:
+        if count == 500:
           break 
 #print(list)
+mycursor = connection.cursor()
+
 
 mycursor = connection.cursor()
 
@@ -118,7 +121,7 @@ for x in myresult:
   total = x
 
 for z in range(total):
-  print(z)
+  #print(z)
   mycursor = connection.cursor()
 
   mycursor.execute("SELECT DISTINCT LocationName FROM Location")
@@ -127,13 +130,13 @@ for z in range(total):
   for places in result:
     locations = places
 
-    for word in list:
-        if word in locations:
-            list.remove(locations)
+   # for word in list:
+    #    if word in locations:
+     #       list.remove(locations)
                 
-            for words in list:
-                if words in locations:
-                    list.remove(locations)
+            #for words in list:
+             #   if words in locations:
+              #      list.remove(locations)
             
 
       

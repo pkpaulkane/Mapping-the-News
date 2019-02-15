@@ -1,0 +1,164 @@
+<html>
+  <head><title>Mapping the News</title></head>
+  <h1>Mapping the News</h1>
+  <head>
+    <style>
+
+    ul {
+        width: 100%;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
+    
+    li {
+        float: left;
+        border-right:1px solid #bbb;
+    }
+    
+    li:last-child {
+        border-right: none;
+    }
+    
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+    
+    li a:hover:not(.active) {
+        background-color: #B5D3E7;
+    }
+    
+    .active {
+        background-color: #89cff0;
+    }
+
+    .related {
+            position: absolute;
+            right: 1%;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #f1f1f1;
+            border-radius: 0;
+            transition: .2s;
+        }
+    </style>
+    </head>
+  
+  <body>
+  <div id="mapdiv" align = "center" style="float: left; width: 100%; height: 100%; ">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
+  <html>
+        <head><title>Mapping the News</title></head>
+
+        <head>
+          <style>
+      
+      ul {
+        width: 100%;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+        }
+        li {
+        float: left;
+        border-right:1px solid #bbb;
+        }
+        li:last-child {
+        border-right: none;
+        }
+        li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        }
+        li a:hover:not(.active) {
+        background-color: #B5D3E7;
+        }
+
+        .active {
+            background-color: #89cff0;
+        }
+      
+          .related {
+                  position: absolute;
+                  right: 1%;
+                  padding: 10px 20px;
+                  background-color: #333;
+                  color: #f1f1f1;
+                  border-radius: 0;
+                  transition: .2s;
+              }
+          </style>
+          </head>
+          <body>
+            <ul>
+            <li><a class = "politics" href = "{{ url_for('home') }}">Home</a></li>
+            <li><a class="map" href="{{ url_for('map') }}">Map</a></li>
+            <li><a class="rank" href="{{ url_for('rank') }}">Rank</a></li>
+            <li><a class="active" href="{{ url_for('country') }}">Country</a></li>
+            </ul>
+        </body>
+          <h1 style="display:inline-block;">{{title}} </h1>
+        
+          <button class = "related" onclick="visitPage();">Related Articles</button>
+        <body>
+        <div id="mapdiv" style="float: left; width: 100%; height: 100%; ">
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
+        <script>
+                var articlesTitle = []
+                var articlesURL = []
+                var primaryID = []
+                
+                {% for id in articlesTitle %}
+                articleID = '{{ id }}'
+                articlesTitle.push(articleID)
+                {% endfor %}
+  
+                {% for name in articlesURL %}
+                webTitle = '{{ name }}'
+                articlesURL.push(webTitle)
+                {% endfor %}
+                                
+                {% for pid in primaryID %}
+                primary = '{{ pid }}'
+                primaryID.push(primary)
+                {% endfor %}
+                
+                for (var i=0; i<articlesTitle.length; i++) {
+                    link = "http://127.0.0.1:8080/map?PrimaryID=" + primaryID[i]
+                    document.write('<a href=' + link + '>' + articlesTitle[i] + ' ' + '<br /></a>')
+                }
+
+ 
+                
+        </script>
+        </div>
+      </body>
+      
+      <body onload="init()">
+          
+          <div id="mapdiv"></div>
+        </body>
+      
+      
+      </html>
+          
+  </div>
+</body>
+
+
+
+</html>
+    
