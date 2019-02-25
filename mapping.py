@@ -64,6 +64,7 @@ def map():
     # note: Just for debugging
     for i in range( len(place) ):
         print( place[i], lat[i], lon[i] )
+    
 
     return render_template('map.html', PrimaryID = primary_id, title = title, url = url, lat = lat, lon = lon, place = place, artID = artID)
 
@@ -177,7 +178,7 @@ def country():
 
     mycursor = connection.cursor()
     
-    sql = ("SELECT distinct Location.LocationName, Articles.URL, Articles.Title, Articles.PrimaryID FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID WHERE Location.LocationName = '%s'" % country)
+    sql = ("SELECT distinct Location.LocationName, Articles.URL, Articles.Title, Articles.PrimaryID FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID WHERE Location.LocationName = '%s' order by Articles.Title ASC" % country)
     print(sql)
     mycursor.execute(sql)
     
@@ -192,7 +193,7 @@ def country():
 
     print(primaryID, articlesTitle)    
     
-    return render_template('country.html', articlesTitle = articlesTitle, articlesURL = articlesURL, primaryID = primaryID)
+    return render_template('country.html', articlesTitle = articlesTitle, articlesURL = articlesURL, primaryID = primaryID, country = country)
 
 @app.route('/rank')
 def rank():
@@ -201,17 +202,17 @@ def rank():
     #place = float(str_id)
 
     country = []
+    count = []
     articlesTitle = []
-
-
 
     mycursor = connection.cursor()
 
-    mycursor.execute("SELECT Location.LocationName, count(Location.LocationName) From Location group by Location.LocationName order by count(Location.LocationName) desc")
+    mycursor.execute("SELECT Coordinates.Country, count(Coordinates.Country) From Coordinates group by Coordinates.Country order by count(Coordinates.Country) desc Limit 10")
     myresult = mycursor.fetchall() 
 
     for row in myresult: 
         country.append(row[0])
+        count.append(row[1])
     
     #print(country)
 
@@ -221,7 +222,7 @@ def rank():
     for result in mycursor.fetchall():
         articlesTitle.append( result[0]) 
 
-    return render_template('rank.html', country = country, articlesTitle = articlesTitle)
+    return render_template('rank.html', country = country, count = count, articlesTitle = articlesTitle)
 
 @app.route('/details')
 def details():
@@ -236,8 +237,8 @@ def details():
     mycursor.execute("SELECT distinct Articles.Title, Articles.PrimaryID FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID WHERE Location.LocationName = '%s'" % str_id)
     
     for result in mycursor.fetchall():
-        articlesTitle.append( result[0]) 
-        primaryID.append( result[1])
+        articlesTitle.append(result[0]) 
+        primaryID.append(result[1])
 
     sport = 0
     politics = 0
@@ -274,6 +275,57 @@ def details():
 
     return render_template('details.html', articlesTitle = articlesTitle, primaryID = primaryID, politics = politics, sport = sport, business= business, entertainment = entertainment, tech = tech, str_id = str_id)
 
+@app.route('/calendar')
+def calendar():
+            # note: check URL parameter "id"
+    date_id = request.args.get("date", default = "")
+    category_id = request.args.get("category", default = "")
+    #primary_id = int(str_id)
+
+    mycursor = connection.cursor()
+    if(category_id == 'all'):
+        sql = "SELECT Distinct Location.LocationName, Articles.URL, Articles.Title, Articles.PrimaryID FROM Articles, Location WHERE Articles.Date = '%s' and Location.articleID = Articles.ID" % date_id
+
+    else:
+    # Get the Locations first
+        sql = "SELECT Distinct Location.LocationName, Articles.URL, Articles.Title, Articles.PrimaryID FROM  Location, Articles inner join categories on Articles.PrimaryID = categories.ID WHERE Articles.Date = '%s' and Location.articleID = Articles.ID and categories.labels = '%s'" % (date_id, category_id)
+    print(sql)
+    mycursor.execute(sql)
+    place = []
+    url = []
+    title = ""
+    artID = []
+
+    for result in mycursor.fetchall():
+        # note: ignore duplicates
+        if not result[0] in place:
+            place.append( result[0] ) 
+            url.append( result[1] )
+            title = result[2]
+            artID.append(result[3])
+
+    print(place)
+
+    # Get the Coordinates next
+    lat = []
+    lon = []
+    for placename in place:
+        sql = "SELECT Latitude, Longitude FROM Coordinates WHERE Place='%s'" % placename
+        mycursor.execute(sql)
+        for result in mycursor.fetchall():
+            lat.append(result[0])
+            lon.append(result[1])
+
+    # note: Just for debugging
+    for i in range( len(place) ):
+        print( place[i], lat[i], lon[i] ) 
+
+    return render_template('calendar.html', title = title, url = url, lat = lat, lon = lon, place = place, artID = artID, date_id = date_id, category_id = category_id)
+
+@app.route('/click')
+def click():
+    
+    return render_template('click.html')
 
 if __name__ == '__main__':
    app.run(debug = True,port=8080)

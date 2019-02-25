@@ -2,7 +2,18 @@
     <head><title>Mapping the News</title></head>
     <h1>Mapping the News</h1>
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
+          body {
+        font: 400 15px/1.8 Lato, sans-serif;
+        color: #777;
+    }
       ul {
         width: 100%;
         list-style-type: none;
@@ -37,9 +48,9 @@
         <body>
           <ul>
           <li><a class = "politics" href = "{{ url_for('home') }}">Home</a></li>
-          <li><a class="map" href="{{ url_for('map') }}">Map</a></li>
+          <li><a class="click" href="{{ url_for('click') }}">Map</a></li>
           <li><a class="rank" href="{{ url_for('rank') }}">Rank</a></li>
-          <li><a class="active" href="{{ url_for('details') }}">Details</a></li>
+          <li><a class="calendar" href="{{ url_for('calendar') }}">Calendar</a></li>
           </ul>
       </body>
   <body>

@@ -91,8 +91,9 @@
         <body>
             <ul>
             <li><a class = "active" href = "{{ url_for('home') }}">Home</a></li>
-            <li><a class="map" href="{{ url_for('map') }}">Map</a></li>
+            <li><a class="click" href="{{ url_for('click') }}">Map</a></li>
             <li><a class="rank" href="{{ url_for('rank') }}">Rank</a></li>
+            <li><a class="calendar" href="{{ url_for('calendar') }}">Calendar</a></li>
             </ul>
         </body>
   <body>
@@ -142,7 +143,7 @@
         </div>
         </div>
   </div>
-  <div id = "Articles" class = hidden align = "center" style="font-size:200%;" >
+  <div id = "Articles" class = hidden align = "center" style="font-size:150%;" >
     <script>
             var title = [];
             var primaryID = [];
@@ -168,13 +169,13 @@
             for (var i=0; i<title.length; i++) {
                 link = "http://127.0.0.1:8080/map?PrimaryID=" + primaryID[i]
         
-                document.write('<a href=' + link + '>' + title[i] + ' ' + '<br /></a>')
+                 document.write('<a href=' + link + '>' + title[i] + ' ' + '<br /></a>')
         
             }
  
             </script>
   </div>
-  <div id = "Sport" class = hidden style="font-size:200%;" >
+  <div id = "Sport" class = hidden align = "center" style="font-size:150%;" >
     <script>
             var title = [];
             var primaryID = [];
@@ -206,7 +207,7 @@
  
             </script>
   </div>
-  <div id = "Entertainment" class = hidden style="font-size:200%;">
+  <div id = "Entertainment" class = hidden align = "center" style="font-size:150%;">
     <script>
             var title = [];
             var primaryID = [];
@@ -238,7 +239,7 @@
  
             </script>
   </div>
-  <div id = "Business" class = hidden style="font-size:200%;">
+  <div id = "Business" class = hidden align = "center" style="font-size:150%;">
     <script>
             var title = [];
             var primaryID = [];
@@ -270,7 +271,7 @@
  
             </script>
   </div>
-  <div id = "Technology" class = hidden style="font-size:200%;">
+  <div id = "Technology" class = hidden align = "center" style="font-size:150%;">
     <script>
             var title = [];
             var primaryID = [];
@@ -302,7 +303,7 @@
  
             </script>
   </div>
-  <div id = "Politics" class = hidden style="font-size:200%;">
+  <div id = "Politics" class = hidden align = "center" style="font-size:150%;">
     <script>
             var title = [];
             var primaryID = [];

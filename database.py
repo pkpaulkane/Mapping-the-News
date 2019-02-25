@@ -65,13 +65,14 @@ with open('guardian-2017.jsonl', 'r') as f:
         body = (item['fields']['bodyText'])
         title = (content['webTitle'])
         sectionID = content['sectionId']
+        date = content['webPublicationDate'][:10]
         print(count)
 
         sql_insert_query = """ INSERT INTO `Articles`
-                          (`ID`, `BodyText`, `URL`, `Title`, `PrimaryID`, `sectionID`) VALUES (%s, %s, %s, %s, %s, %s)"""
+                          (`ID`, `BodyText`, `URL`, `Title`, `PrimaryID`, `sectionID`, `Date`) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
         cursor = connection.cursor()
-        cursor.execute(sql_insert_query, (content['id'], content['fields']['bodyText'],content['webUrl'], content['webTitle'], count, sectionID ))
+        cursor.execute(sql_insert_query, (content['id'], content['fields']['bodyText'],content['webUrl'], content['webTitle'], count, sectionID, date ))
         connection.commit()
 
         text = body
@@ -95,7 +96,17 @@ with open('guardian-2017.jsonl', 'r') as f:
                         reader2 = csv.reader(ff, delimiter=',')
                         for row in reader2:
                             if(entity1.text == row[0]):
-                                #print(entity1.text)
+                              #sentence1 = 'https://us1.locationiq.com/v1/search.php?key=25e9dfb148734f&q=PLACE&format=json'
+                              #sentence1 = re.sub(r'\bPLACE\b', places, entity1)
+
+
+
+                              #time.sleep(0.75)
+                              #with urllib.request.urlopen(sentence1) as url:
+                                #data = json.loads(url.read().decode('utf-8'))
+                                  
+                                #latitude = data[0]['lat']
+                                #longitude = (data[0]['lon'])
                                 sql_insert_query = """ INSERT INTO `Location`
                                               (`Count`, `articleID`,`LocationName`, `LocationID`) VALUES (%s, %s, %s, %s)"""
 
@@ -104,7 +115,7 @@ with open('guardian-2017.jsonl', 'r') as f:
                                 counter += 1
                                 connection.commit()
                     
-        if count == 500:
+        if count == 10:
           break 
 #print(list)
 mycursor = connection.cursor()
@@ -153,12 +164,23 @@ for z in range(total):
         
       latitude = data[0]['lat']
       longitude = (data[0]['lon'])
+      lat = float(latitude)
+      long = float(longitude)
+      
+      coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=25e9dfb148734f&lat=%f&lon=%f&format=json" %(lat, long)) 
+      
+      print(coordinates1)
+      with urllib.request.urlopen(coordinates1) as url:
+          data = json.loads(url.read().decode('utf-8'))
 
+      country = (data['address']['country'])
+      print(country)
+    
       sql_insert_query = """ INSERT INTO `Coordinates`
-                    (`Counter`, `Place`, `Longitude`, `Latitude`) VALUES (%s, %s, %s, %s)"""
+                    (`Counter`, `Place`, `Longitude`, `Latitude`, `Country`) VALUES (%s, %s, %s, %s, %s)"""
 
       cursor = connection.cursor()
-      cursor.execute(sql_insert_query, (counting, places, latitude, longitude))
+      cursor.execute(sql_insert_query, (counting, places, latitude, longitude, country))
       connection.commit()
 
 #Removing duplicates fromm list of unknown places
