@@ -1,0 +1,176 @@
+<html>
+    <head><title>Mapping the News</title></head>
+    <h1>Mapping the News</h1>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+          body {
+        font: 400 15px/1.8 Lato, sans-serif;
+        color: #777;
+    }
+
+    body, html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.leftpane {
+    width: 50%;
+    height: 100%;
+    float: left;
+    background-color: white;
+    border-collapse: collapse;
+}
+
+.middlepane {
+    width: 50%;
+    height: 100%;
+    float: left;
+    background-color: royalblue;
+    border-collapse: collapse;
+}
+
+.rightpane {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  float: right;
+  background-color: white;
+  border-collapse: collapse;
+}
+
+.toppane {
+  width: 100%;
+  height: 100px;
+  border-collapse: collapse;
+  background-color: #4da6ff;
+}
+
+
+ul {
+        width: 100%;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+        }
+        li {
+        float: left;
+        border-right:1px solid #bbb;
+        }
+        li:last-child {
+        border-right: none;
+        }
+        li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        }
+        li a:hover:not(.active) {
+        background-color: #B5D3E7;
+        }
+
+        .active {
+            background-color: #89cff0;
+        }
+        </style>
+        </head>
+     
+        <body>
+          <ul>
+          <li><a class = "politics" href = "{{ url_for('home') }}">Home</a></li>
+          <li><a class="click" href="{{ url_for('click') }}">Map</a></li>
+          <li><a class="rank" href="{{ url_for('rank') }}">Rank</a></li>
+          <li><a class="calendar" href="{{ url_for('calendar') }}">Calendar</a></li>
+          </ul>
+      </body>
+
+  <body>
+        <div class="container">
+  
+    <div class="leftpane">
+        
+        <h1>Details</h1>
+        <div id="piechart" align = "left"></div>
+  
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        
+        <script type="text/javascript">
+   
+           var politics = {{politics}}
+           var tech = {{tech}}
+           var sport = {{sport}}
+           var entertainment = {{entertainment}}
+           var business = {{business}}
+   
+           var place = '{{str_id}}'
+   
+        // Load google charts
+        google.charts.load('current', {'packages':['corechart']});
+                   google.charts.setOnLoadCallback(drawChart);
+                   
+                   // Draw the chart and set the chart values
+                   function drawChart() {
+                     var data = google.visualization.arrayToDataTable([
+                     ['Task', 'Hours per Day'],
+                     ['Sport', sport],
+                     ['Tech', tech],
+                     ['Entertainment', entertainment],
+                     ['Business', business],
+                     ['Politics', politics]
+                   ]);
+                   
+                     // Optional; add a title and set the width and height of the chart
+                     var options = {'title': place, 'width':550, 'height':400};
+                   
+                     // Display the chart inside the <div> element with id="piechart"
+                     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                     chart.draw(data, options);
+                   }
+                  </script>
+    </div>
+    <div class="rightpane">
+        <script type="text/javascript">
+
+            var articlesTitle = []
+            var primaryID = []
+                       
+            {% for place in articlesTitle %}
+            placeName = '{{ place }}'
+            articlesTitle.push(placeName)
+            {% endfor %}
+       
+            {% for id in primaryID %}
+            placeID = '{{ id }}'
+            primaryID.push(placeID)
+            {% endfor %}
+       
+       
+            for (var i=0; i<articlesTitle.length; i++) { 
+                
+                //document.write(country[i] + '<br />')
+                link = "http://127.0.0.1:8080/map?PrimaryID=" + primaryID[i]
+       
+                document.write('<a href=' + link + '>' + articlesTitle[i] + ' ' + '<br /></a>')
+            }               
+            
+           </script>
+    </div>   
+</div>    
+  </body>
+</html>

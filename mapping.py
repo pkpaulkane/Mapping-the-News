@@ -166,6 +166,7 @@ def country():
         # note: check URL parameter "id"
     str_id = request.args.get("Lat", default = "0")
     str_id1 = request.args.get("Long", default = "0")
+
     lat = float(str_id)
     long = float(str_id1)
 
@@ -178,7 +179,7 @@ def country():
 
     mycursor = connection.cursor()
     
-    sql = ("SELECT distinct Location.LocationName, Articles.URL, Articles.Title, Articles.PrimaryID FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID WHERE Location.LocationName = '%s' order by Articles.Title ASC" % country)
+    sql = ("SELECT distinct Coordinates.Country, Articles.URL, Articles.Title, Articles.PrimaryID FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID inner join Coordinates on Location.LocationName = Coordinates.Place WHERE Coordinates.Country = '%s' order by Articles.Title ASC" % country)
     print(sql)
     mycursor.execute(sql)
     
@@ -199,7 +200,6 @@ def country():
 def rank():
         
     str_id = request.args.get("Location", default = "0")
-    #place = float(str_id)
 
     country = []
     count = []
@@ -207,7 +207,7 @@ def rank():
 
     mycursor = connection.cursor()
 
-    mycursor.execute("SELECT Coordinates.Country, count(Coordinates.Country) From Coordinates group by Coordinates.Country order by count(Coordinates.Country) desc Limit 10")
+    mycursor.execute("SELECT distinct Coordinates.Country, count(Coordinates.Country) FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID inner join Coordinates on Coordinates.Place = Location.LocationName group by Coordinates.Country order by count(Coordinates.Country) desc Limit 10")
     myresult = mycursor.fetchall() 
 
     for row in myresult: 
@@ -224,8 +224,8 @@ def rank():
 
     return render_template('rank.html', country = country, count = count, articlesTitle = articlesTitle)
 
-@app.route('/details')
-def details():
+@app.route('/details1')
+def details1():
         
     str_id = request.args.get("Location", default = "0")
     #place = float(str_id)
@@ -234,7 +234,7 @@ def details():
     primaryID = []
 
     mycursor = connection.cursor()
-    mycursor.execute("SELECT distinct Articles.Title, Articles.PrimaryID FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID WHERE Location.LocationName = '%s'" % str_id)
+    mycursor.execute("SELECT distinct Articles.Title, Articles.PrimaryID FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID inner join Coordinates on Coordinates.Place = Location.LocationName Where Coordinates.Country = '%s' order by Articles.Title ASC" % str_id)
     
     for result in mycursor.fetchall():
         articlesTitle.append(result[0]) 
@@ -248,7 +248,7 @@ def details():
 
 
     mycursor = connection.cursor()
-    mycursor.execute("SELECT distinct COUNT(categories.labels), categories.labels, Location.LocationName from Articles inner join categories on Articles.PrimaryID = categories.ID inner join Location on Location.LocationID = Articles.PrimaryID  Where Location.LocationName = '%s' group by categories.labels" % str_id)
+    mycursor.execute("SELECT distinct COUNT(categories.labels), categories.labels, Coordinates.Country from Articles inner join categories on Articles.PrimaryID = categories.ID inner join Location on Location.LocationID = Articles.PrimaryID  inner join Coordinates on Coordinates.Place = Location.LocationName Where Coordinates.Country = '%s' group by categories.labels" % str_id)
 
     for result in mycursor.fetchall():
         if(result[1] == 'politics'):
@@ -267,13 +267,7 @@ def details():
             tech += float(result[0])
         
 
-    #print(politics)
-    #print(sport)
-    #print(business)
-    #print(entertainment)
-    #print(tech)
-
-    return render_template('details.html', articlesTitle = articlesTitle, primaryID = primaryID, politics = politics, sport = sport, business= business, entertainment = entertainment, tech = tech, str_id = str_id)
+    return render_template('details1.html', articlesTitle = articlesTitle, primaryID = primaryID, politics = politics, sport = sport, business= business, entertainment = entertainment, tech = tech, str_id = str_id)
 
 @app.route('/calendar')
 def calendar():
@@ -317,8 +311,8 @@ def calendar():
             lon.append(result[1])
 
     # note: Just for debugging
-    for i in range( len(place) ):
-        print( place[i], lat[i], lon[i] ) 
+    #for i in range( len(place) ):
+     #   print( place[i], lat[i], lon[i] ) 
 
     return render_template('calendar.html', title = title, url = url, lat = lat, lon = lon, place = place, artID = artID, date_id = date_id, category_id = category_id)
 
@@ -326,6 +320,31 @@ def calendar():
 def click():
     
     return render_template('click.html')
+
+@app.route('/country2')
+def country2():
+        # note: check URL parameter "id"
+    str_id = request.args.get("Country", default = " ")
+    
+    mycursor = connection.cursor()
+    
+    sql = ("SELECT distinct Location.LocationName, Articles.URL, Articles.Title, Articles.PrimaryID FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID inner join Coordinates on Location.LocationName = Coordinates.Place WHERE Location.LocationName = '%s' order by Articles.Title ASC" % str_id)
+    print(sql)
+    mycursor.execute(sql)
+    
+    primaryID = []
+    articlesTitle = []
+    articlesURL = []
+
+    for result in mycursor.fetchall():
+        primaryID.append(result[3])
+        articlesTitle.append( result[2] ) 
+        articlesURL.append( result[1] )
+  
+    
+    return render_template('country2.html', articlesTitle = articlesTitle, articlesURL = articlesURL, primaryID = primaryID, str_id = str_id)
+
+
 
 if __name__ == '__main__':
    app.run(debug = True,port=8080)

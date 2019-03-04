@@ -1,105 +1,114 @@
 <html>
-<h1>Mapping the News</h1>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <head><title>Mapping the News</title></head>
+  <body>
+  <h1>Mapping the News</h1>
+</body>
+  <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
-
     body {
         font: 400 15px/1.8 Lato, sans-serif;
         color: #777;
     }
-    ul {
-    width: 100%;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-    }
-    li {
-    float: left;
-    border-right:1px solid #bbb;
-    }
-    li:last-child {
-    border-right: none;
-    }
-    li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    }
-    li a:hover:not(.active) {
-    background-color: #B5D3E7;
-    }
-
-    .active {
-        background-color: #89cff0;
-    }
-    .thumbnail {
-        padding: 0 0 30px 0;
-        border: none;
-        border-radius: 0;
-        bottom: 100;
-        right: 0;
-        width: 300px;
-    }
-    .thumbnail p {
-        margin-top: 15px;
-        color: #555;
-    }
-    .btn {
-        padding: 10px 20px;
+     ul {
+        width: 100%;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
         background-color: #333;
-        color: #f1f1f1;
-        border-radius: 0;
-        transition: .2s;
-    }
-    .btn:hover, .btn:focus {
-        border: 1px solid #333;
-        background-color: #fff;
-        color: #000;
-    }
+        }
+        li {
+        float: left;
+        border-right:1px solid #bbb;
+        }
+        li:last-child {
+        border-right: none;
+        }
+        li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        }
+        li a:hover:not(.active) {
+        background-color: #B5D3E7;
+        }
+
+        .active {
+            background-color: #89cff0;
+        }
 
     </style>
     </head>
     <body>
         <ul>
-        <li><a class = "home" href = "{{ url_for('home') }}">Home</a></li>
-        <li><a class="click" href="{{ url_for('click') }}">Map</a></li>
+        <li><a class = "politics" href = "{{ url_for('home') }}">Home</a></li>
+        <li><a class="active" href="{{ url_for('click') }}">Map</a></li>
         <li><a class="rank" href="{{ url_for('rank') }}">Rank</a></li>
-        <li><a class="active" href="{{ url_for('calendar') }}">Calendar</a></li>
+        <li><a class="calendar" href="{{ url_for('calendar') }}">Calendar</a></li>
         </ul>
     </body>
-<body>
-    Date: <input type="date" id="date1" value="2017-01-01"min="2017-01-01" max="2017-12-31">
-    <select id="category1" name="Categories" value="Categories">
-        <option value="all">All Categories</option>
-        <option value="business">Business</option>
-        <option value="entertainment">Entertainment</option>
-        <option value="politics">Politics</option>
-        <option value="sport">Sport</option>
-        <option value="tech">Technology</option>
-      </select>
-    
-    <button onclick="myFunction()">Map me</button>
-    <h3 style="display:inline-block;"> {{date_id}}     {{category_id}}  </h3>
-    <div id="mapdiv" style="float: right; width: 100%; height: 100%; ">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
-    <script>
-    function myFunction() {
-    var date = document.getElementById("date1").value
-    var category = document.getElementById("category1").value
-      window.location = ("http://127.0.0.1:8080/calendar?date=" + date + "&category=" + category)
-    }
-    var map;
+  
+  <body>
+  <div id="mapdiv" style="float: right; width: 100%; height: 100%; ">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
+  <script>
+
+ //Set up a click handler
+ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
+                defaultHandlerOptions: {
+                    'single': true,
+                    'double': false,
+                    'pixelTolerance': 0,
+                    'stopSingle': false,
+                    'stopDouble': false
+                },
+
+                initialize: function(options) {
+                    this.handlerOptions = OpenLayers.Util.extend(
+                        {}, this.defaultHandlerOptions
+                    );
+                    OpenLayers.Control.prototype.initialize.apply(
+                        this, arguments
+                    ); 
+                    this.handler = new OpenLayers.Handler.Click(
+                        this, {
+                            'click': this.trigger
+                        }, this.handlerOptions
+                    );
+                }, 
+
+                trigger: function(e) {
+                    //A click happened!
+                    var lonlat = map.getLonLatFromViewPortPx(e.xy)
+                    
+                    lonlat.transform(
+                      new OpenLayers.Projection("EPSG:900913"), 
+                      new OpenLayers.Projection("EPSG:4326")
+                    );
+                    
+                    var country = 'https://eu1.locationiq.com/v1/reverse.php?key=25e9dfb148734f&lat=LATITUDE&lon=LONGITUDE&format=json';
+                    country = country.replace('LATITUDE', lonlat.lat);
+                    country = country.replace('LONGITUDE', lonlat.lon);
+                    
+                    var str = country;
+                    
+                    window.location = "http://127.0.0.1:8080/country?Lat=" + lonlat.lat + "&Long=" + lonlat.lon
+
+                }
+
+            });
+            
+            var map;
             function init(){
                 map = new OpenLayers.Map("mapdiv");
                 map.addLayer(new OpenLayers.Layer.OSM());
@@ -157,7 +166,7 @@
                     
                     var feature = new OpenLayers.Feature.Vector(
                         new OpenLayers.Geometry.Point( lat[i], lon[i] ).transform(epsg4326, projectTo),
-                        {description: '<a href="http://127.0.0.1:8080/country2?Country=' + place[i] + '">' + place[i] + '</a>'},
+                        {description: '<a href="' + url[i] + '">' + place[i] + '</a>'},
                         {externalGraphic: href = '/static/marker.png', graphicHeight: 50, graphicWidth: 40, graphicXOffset:-12, graphicYOffset:-25  }
                     ); 
             
@@ -218,5 +227,7 @@
     <div id="mapdiv"></div>
 
   </body>
-    </body>
+
+
 </html>
+    

@@ -115,8 +115,8 @@ with open('guardian-2017.jsonl', 'r') as f:
                                 counter += 1
                                 connection.commit()
                     
-        if count == 10:
-          break 
+        #if count == 100:
+          #break 
 #print(list)
 mycursor = connection.cursor()
 
@@ -152,10 +152,76 @@ for z in range(total):
 
       
     counting += 1
-      
-    sentence1 = 'https://us1.locationiq.com/v1/search.php?key=25e9dfb148734f&q=PLACE&format=json'
-    sentence1 = re.sub(r'\bPLACE\b', places, sentence1)
 
+    if counting < 5000:  
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=25e9dfb148734f&q=PLACE&format=json'
+
+    elif counting >= 5000 and counting < 10000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=1ec81b8a7454a2&q=PLACE&format=json'
+    
+    elif counting >= 10000 and counting < 15000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=8f244b5da51d53&q=PLACE&format=json'
+    
+    elif counting >= 15000 and counting < 20000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=ac5acb030a42bc&q=PLACE&format=json'
+    
+    elif counting >= 20000 and counting < 25000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=b88418f9a94ae5&q=PLACE&format=json'
+    
+    elif counting >= 25000 and counting < 30000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=b3c36817286528&q=PLACE&format=json'
+    
+    elif counting >= 30000 and counting < 35000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=52cca27b8970d5&q=PLACE&format=json'
+    
+    elif counting >= 35000 and counting < 40000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=ce4ac18e483d55&q=PLACE&format=json'
+   
+    elif counting >= 40000 and counting < 45000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=97f5412cd01141&q=PLACE&format=json'
+    
+    elif counting >= 45000 and counting < 50000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=33958a39a49693&q=PLACE&format=json'
+    
+    elif counting >= 50000 and counting < 55000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=7833ac9400b3cf&q=PLACE&format=json'
+    
+    elif counting >= 55000 and counting < 60000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=13584d5082f9aa&q=PLACE&format=json'
+    
+    elif counting >= 60000 and counting < 65000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=375f923c63f449&q=PLACE&format=json'
+    
+    elif counting >= 65000 and counting < 70000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=ed454ec6362a9c&q=PLACE&format=json'
+    
+    elif counting >= 70000 and counting < 75000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=c2f90a6d00f76d&q=PLACE&format=json'
+    
+    elif counting >= 75000 and counting < 80000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=de905daded04e6&q=PLACE&format=json'
+    
+    elif counting >= 80000 and counting < 85000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=602f7c9167be51&q=PLACE&format=json'
+    
+    elif counting >= 85000 and counting < 90000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=02fcd6939613b5&q=PLACE&format=json'
+    
+    elif counting >= 90000 and counting < 95000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=cbd5f5d9b42a5c&q=PLACE&format=json'
+    
+    elif counting >= 95000 and counting < 100000:
+      sentence1 = 'https://us1.locationiq.com/v1/search.php?key=739aeeb96829af&q=PLACE&format=json'
+    
+    if not places.strip():
+      places = 'Ireland'
+    
+    sentence1 = re.sub(r'\bPLACE\b', places, sentence1)
+    print(counting)
+    print(places)
+    print(sentence1)
+    
+    
 
 
     time.sleep(0.75)
@@ -167,13 +233,79 @@ for z in range(total):
       lat = float(latitude)
       long = float(longitude)
       
-      coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=25e9dfb148734f&lat=%f&lon=%f&format=json" %(lat, long)) 
+      if counting < 5000:  
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=25e9dfb148734f&lat=%f&lon=%f&format=json" %(lat, long))
+  
+      elif counting >= 5000 and counting < 10000:
+        coordinates1 = '("https://eu1.locationiq.com/v1/reverse.php?key=1ec81b8a7454a2&lat=%f&lon=%f&format=json" %(lat, long))
       
-      print(coordinates1)
+      elif counting >= 10000 and counting < 15000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=8f244b5da51d53&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 15000 and counting < 20000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=ac5acb030a42bc&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 20000 and counting < 25000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=b88418f9a94ae5&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 25000 and counting < 30000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=b3c36817286528&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 30000 and counting < 35000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=52cca27b8970d5&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 35000 and counting < 40000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=ce4ac18e483d55&lat=%f&lon=%f&format=json" %(lat, long))
+    
+      elif counting >= 40000 and counting < 45000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=97f5412cd01141&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 45000 and counting < 50000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=33958a39a49693&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 50000 and counting < 55000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=7833ac9400b3cf&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 55000 and counting < 60000:
+        coordinates1 =  ("https://eu1.locationiq.com/v1/reverse.php?key=13584d5082f9aa&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 60000 and counting < 65000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=375f923c63f449&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 65000 and counting < 70000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=ed454ec6362a9c&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 70000 and counting < 75000:
+        coordinates1 =  ("https://eu1.locationiq.com/v1/reverse.php?key=c2f90a6d00f76d&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 75000 and counting < 80000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=de905daded04e6&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 80000 and counting < 85000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=602f7c9167be51&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 85000 and counting < 90000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=02fcd6939613b5&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 90000 and counting < 95000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=cbd5f5d9b42a5c&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      elif counting >= 95000 and counting < 100000:
+        coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=739aeeb96829af&lat=%f&lon=%f&format=json" %(lat, long))
+      
+      #print(coordinates1)
       with urllib.request.urlopen(coordinates1) as url:
           data = json.loads(url.read().decode('utf-8'))
 
-      country = (data['address']['country'])
+      if('country' in data['address']):
+        country = (data['address']['country'])
+        
+      elif('city' in data['address']): 
+          country = (data['address']['city'])
+
+      else:
+        country = " "
+      
       print(country)
     
       sql_insert_query = """ INSERT INTO `Coordinates`

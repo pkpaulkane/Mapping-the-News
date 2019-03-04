@@ -1,74 +1,23 @@
 <html>
-  <head><title>Mapping the News</title></head>
-  <h1>Mapping the News</h1>
-  <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <style>
-        body {
+        <head><title>Mapping the News</title></head>
+        <body>
+                <h1>Mapping the News</h1>
+              </body>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+            <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        </head>
+        <head>
+          <style>
+                          body {
         font: 400 15px/1.8 Lato, sans-serif;
         color: #777;
     }
-
-    ul {
-        width: 100%;
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: #333;
-    }
-    
-    li {
-        float: left;
-        border-right:1px solid #bbb;
-    }
-    
-    li:last-child {
-        border-right: none;
-    }
-    
-    li a {
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-    }
-    
-    li a:hover:not(.active) {
-        background-color: #B5D3E7;
-    }
-    
-    .active {
-        background-color: #89cff0;
-    }
-
-    .related {
-            position: absolute;
-            right: 1%;
-            padding: 10px 20px;
-            background-color: #333;
-            color: #f1f1f1;
-            border-radius: 0;
-            transition: .2s;
-        }
-    </style>
-    </head>
-  
-  <body>
-  <div id="mapdiv" style="float: left; width: 100%; height: 100%; ">
-  <script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
-  <html>
-        <head><title>Mapping the News</title></head>
-        <head>
-          <style>
       
       ul {
         width: 100%;
@@ -120,11 +69,12 @@
 
             </ul>
         </body>
+      <h1 style="text-align: center">Most Featured Countries </h1>
         <body>
-        <div id="mapdiv" align = "center" style="float: left; width: 100%; height: 100%; font-size:200%;">
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
+        <div id="mapdiv" align = "center" style="float: left; width: 100%; height: 80%; font-size:200%;">
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
         <script>
+
                 var country = []
                 var count = []
                 
@@ -138,56 +88,49 @@
                 count.push(counter)
                 {% endfor %}
 
-                anychart.onDocumentReady(function() {
-                var data = {
-                    header: ["Country", "Count"],
-                    rows: [
-                        [country[0], count[0]],
-                        [country[1], count[1]],
-                        [country[2], count[2]],
-                        [country[3], count[3]],
-                        [country[4], count[4]],
-                        [country[5], count[5]],
-                        [country[6], count[6]],
-                        [country[7], count[7]],
-                        [country[8], count[8]],
-                        [country[9], count[9]]
-                    ]};
-
-                // create the chart
-                var chart = anychart.column();
+                link0 = ("'http://127.0.0.1:8080/details1?Location=" + country[0] + "'" + "target='_self'")
+                rank0 = ('<a href=' + link0 + '>' + country[0] + '</a>')
                 
-                // add the data
-                chart.data(data);
+                link1 = ("'http://127.0.0.1:8080/details1?Location=" + country[1] + "'" + "target='_self'")
+                rank1 = ('<a href=' + link1 + '>' + country[1] + '</a>')
 
-                // set the chart title
-                chart.title("Top 10 Mentioned Countries");
+                link2 = ("'http://127.0.0.1:8080/details1?Location=" + country[2] + "'" + "target='_self'")
+                rank2 = ('<a href=' + link2 + '>' + country[2] + '</a>')
 
-                chart.container('mapdiv');
-                chart.draw();
-           
-                });
+                link3 = ("'http://127.0.0.1:8080/details1?Location=" + country[3] + "'" + "target='_self'")
+                rank3 = ('<a href=' + link3 + '>' + country[3] + '</a>')
 
-                for (var i=0; i<country.length; i++) { 
-                    
-                    //document.write(country[i] + '<br />')
-                    link = "http://127.0.0.1:8080/details?Location=" + country[i]
-        
-                    document.write('<a href=' + link + '>' + country[i] + ' ' + count[i] + '<br /></a>')
-                }
+                link4 = ("'http://127.0.0.1:8080/details1?Location=" + country[4] + "'" + "target='_self'")
+                rank4 = ('<a href=' + link4 + '>' + country[4] + '</a>')
 
- 
+                link5 = ("'http://127.0.0.1:8080/details1?Location=" + country[5] + "'" + "target='_self'")
+                rank5 = ('<a href=' + link5 + '>' + country[5] + '</a>')
+
+                link6 = ("'http://127.0.0.1:8080/details1?Location=" + country[6] + "'" + "target='_self'")
+                rank6 = ('<a href=' + link6 + '>' + country[6] + '</a>')
+
+                link7 = ("'http://127.0.0.1:8080/details1?Location=" + country[7] + "'" + "target='_self'")
+                rank7 = ('<a href=' + link7 + '>' + country[7] + '</a>')
+                link8 = ("'http://127.0.0.1:8080/details1?Location=" + country[8] + "'" + "target='_self'")
+                rank8 = ('<a href=' + link8 + '>' + country[8] + '</a>')
+
+                link9 = ("'http://127.0.0.1:8080/details?Location=" + country[9] + "'" + "target='_self'")
+                rank9 = ('<a href=' + link9 + '>' + country[9] + '</a>')
+                
+                var data = [{
+                x: [rank0, rank1, rank2, rank3, rank4, rank5, rank6, rank7, rank8, rank9],
+                y: [count[0], count[1], count[2], count[3], count[4], count[5], count[6], count[7], count[8], count[9]],
+                type: 'bar',
+                }];
+
+                Plotly.plot('mapdiv', data)
+
+
                 
         </script>
         </div>
       </body>
-      
       </html>
-          
-  </div>
-
-
-
 
 </html>
     
