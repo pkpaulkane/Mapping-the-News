@@ -8,6 +8,7 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!-- Setting the style for my related page-->
         <style>
             h1 {
         font:  36px Lato, sans-serif; 
@@ -157,6 +158,7 @@ header{
                 <title>Newspaper Style Design Experiment</title>
                 <meta name="viewport" content="width=device-width">
             <body>
+            <!-- Navigation bar -->
             <ul>
             <li><a class = "politics" href = "{{ url_for('home') }}">Home</a></li>
             <li><a class="click" href="{{ url_for('click') }}">Map</a></li>
@@ -166,6 +168,7 @@ header{
             </ul>
             </body>
             </head>
+            <!-- Setting up 5 columns with article names and buttons to map them -->
             <body align = "center">
             <div class="head">
                 <div class="headerobjectswrapper">
@@ -195,11 +198,10 @@ header{
        
         <script>
 
-var str = 'Related Articles';
-document.getElementById('para').innerHTML = str;
+                var str = 'Related Articles';
+                document.getElementById('para').innerHTML = str;
 
-
-
+                //filling each of the variables with variables from flask for each of the 5 articles
                 var artID = [];
                 var artTitle = [];
         
@@ -213,7 +215,7 @@ document.getElementById('para').innerHTML = str;
                     artID.push(labelTitle)    
                 {% endfor %}
 
-    
+                //loop setting up link for first article
                 for (var i=0; i<artTitle.length; i++) {
                     link = "http://127.0.0.1:8080/map?PrimaryID=" + artID[i]
                     
@@ -238,7 +240,7 @@ document.getElementById('para').innerHTML = str;
                     artID1.push(labelTitle1)    
                 {% endfor %}
 
-    
+                //loop setting up link for second article
                 for (var i=0; i<artTitle1.length; i++) {
                     link1 = "http://127.0.0.1:8080/map?PrimaryID=" + artID1[i]
                     
@@ -263,7 +265,7 @@ document.getElementById('para').innerHTML = str;
                     artID2.push(labelTitle2)    
                 {% endfor %}
 
-    
+                //loop setting up link for third article
                 for (var i=0; i<artTitle2.length; i++) {
                     link2 = "http://127.0.0.1:8080/map?PrimaryID=" + artID2[i]
                     
@@ -288,7 +290,7 @@ document.getElementById('para').innerHTML = str;
                     artID3.push(labelTitle3)    
                 {% endfor %}
 
-    
+                //loop setting up link for fourth article
                 for (var i=0; i<artTitle3.length; i++) {
                     link3 = "http://127.0.0.1:8080/map?PrimaryID=" + artID3[i]
                     
@@ -313,7 +315,7 @@ document.getElementById('para').innerHTML = str;
                     artID4.push(labelTitle4)    
                 {% endfor %}
 
-    
+                //loop setting up link for fifth article
                 for (var i=0; i<artTitle4.length; i++) {
                     link4 = "http://127.0.0.1:8080/map?PrimaryID=" + artID4[i]
                     
@@ -324,10 +326,6 @@ document.getElementById('para').innerHTML = str;
                 function MapMe4(){
                     window.location= link4;
                 }
-
-
-
-
      
                 </script>
       </div>

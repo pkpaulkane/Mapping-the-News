@@ -11,6 +11,8 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <!-- Setting the style for my click page-->
     <style>
     body {
         font: 400 15px/1.8 Lato, sans-serif;
@@ -48,6 +50,7 @@
 
     </style>
     </head>
+    <!-- Navigation bar -->
     <body>
         <ul>
         <li><a class = "politics" href = "{{ url_for('home') }}">Home</a></li>
@@ -96,12 +99,14 @@
                       new OpenLayers.Projection("EPSG:4326")
                     );
                     
+                    //getting the country name based on the click
                     var country = 'https://eu1.locationiq.com/v1/reverse.php?key=25e9dfb148734f&lat=LATITUDE&lon=LONGITUDE&format=json';
                     country = country.replace('LATITUDE', lonlat.lat);
                     country = country.replace('LONGITUDE', lonlat.lon);
                     
                     var str = country;
                     
+                    //changing window to pass URL parameters
                     window.location = "http://127.0.0.1:8080/country?Lat=" + lonlat.lat + "&Long=" + lonlat.lon
 
                 }
@@ -109,6 +114,8 @@
             });
             
             var map;
+
+            //function for the OpenLayers map
             function init(){
                 map = new OpenLayers.Map("mapdiv");
                 map.addLayer(new OpenLayers.Layer.OSM());
@@ -125,13 +132,12 @@
 
                 var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
                 
+                //filling each of the variables with variables from flask
                 var lat = [];
                 var lon = []; 
                 var url = [];
                 var place = [];
                 var artID = []
-                
-                
 
                 {% for latitude in lat %}
                     coordinateLat = '{{ latitude |e }}'
@@ -161,7 +167,7 @@
 
 
 
-                //Loop through the markers array
+                //Loop through the markers array setting the location of markers and their URL with the place name
                 for (var i=0; i<lat.length; i++) {
                     
                     var feature = new OpenLayers.Feature.Vector(
@@ -222,6 +228,7 @@
   </div>
 </body>
 
+<!-- Loading the map -->
 <body onload="init()">
     
     <div id="mapdiv"></div>

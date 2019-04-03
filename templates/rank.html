@@ -13,6 +13,7 @@
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         </head>
         <head>
+          <!-- Setting the style for my rank page-->
           <style>
                           body {
         font: 400 15px/1.8 Lato, sans-serif;
@@ -60,6 +61,7 @@
               }
           </style>
           </head>
+          <!-- Navigation bar -->
           <body>
             <ul>
             <li><a class = "politics" href = "{{ url_for('home') }}">Home</a></li>
@@ -75,54 +77,45 @@
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
         <script>
 
-                var country = []
-                var count = []
+                //Setting up each column of bar chart with URL 
+                link0 = ("'http://127.0.0.1:8080/country2?Country=" + 'United Kingdom' + "'" + "target='_self'")
+                rank0 = ('<a href=' + link0 + '>' + 'United Kingdom' + '</a>')
                 
-                {% for place in country %}
-                placeName = '{{ place }}'
-                country.push(placeName)
-                {% endfor %}
+                link1 = ("'http://127.0.0.1:8080/country2?Country=" + 'United States' + "'" + "target='_self'")
+                rank1 = ('<a href=' + link1 + '>' + 'United States' + '</a>')
 
-                {% for number in count %}
-                counter = '{{ number }}'
-                count.push(counter)
-                {% endfor %}
+                link2 = ("'http://127.0.0.1:8080/country2?Country=" + 'Australia' + "'" + "target='_self'")
+                rank2 = ('<a href=' + link2 + '>' + 'Australia' + '</a>')
 
-                link0 = ("'http://127.0.0.1:8080/details1?Location=" + country[0] + "'" + "target='_self'")
-                rank0 = ('<a href=' + link0 + '>' + country[0] + '</a>')
+                link3 = ("'http://127.0.0.1:8080/country2?Country=" + 'France' + "'" + "target='_self'")
+                rank3 = ('<a href=' + link3 + '>' + 'France' + '</a>')
+
+                link4 = ("'http://127.0.0.1:8080/country2?Country=" + 'PRC' + "'" + "target='_self'")
+                rank4 = ('<a href=' + link4 + '>' + 'China' + '</a>')
+
+                link5 = ("'http://127.0.0.1:8080/country2?Country=" + 'Russia' + "'" + "target='_self'")
+                rank5 = ('<a href=' + link5 + '>' + 'Russia' + '</a>')
+
+                link6 = ("'http://127.0.0.1:8080/country2?Country=" + 'Spain' + "'" + "target='_self'")
+                rank6 = ('<a href=' + link6 + '>' + 'Spain' + '</a>')
+
+                link7 = ("'http://127.0.0.1:8080/country2?Country=" + 'Germany' + "'" + "target='_self'")
+                rank7 = ('<a href=' + link7 + '>' + 'Germany' + '</a>')
                 
-                link1 = ("'http://127.0.0.1:8080/details1?Location=" + country[1] + "'" + "target='_self'")
-                rank1 = ('<a href=' + link1 + '>' + country[1] + '</a>')
+                link8 = ("'http://127.0.0.1:8080/country2?Country=" + 'Colombia' + "'" + "target='_self'")
+                rank8 = ('<a href=' + link8 + '>' + 'Colombia' + '</a>')
 
-                link2 = ("'http://127.0.0.1:8080/details1?Location=" + country[2] + "'" + "target='_self'")
-                rank2 = ('<a href=' + link2 + '>' + country[2] + '</a>')
+                link9 = ("'http://127.0.0.1:8080/country2?Country=" + 'Ireland' + "'" + "target='_self'")
+                rank9 = ('<a href=' + link9 + '>' + 'Ireland' + '</a>')
 
-                link3 = ("'http://127.0.0.1:8080/details1?Location=" + country[3] + "'" + "target='_self'")
-                rank3 = ('<a href=' + link3 + '>' + country[3] + '</a>')
-
-                link4 = ("'http://127.0.0.1:8080/details1?Location=" + country[4] + "'" + "target='_self'")
-                rank4 = ('<a href=' + link4 + '>' + country[4] + '</a>')
-
-                link5 = ("'http://127.0.0.1:8080/details1?Location=" + country[5] + "'" + "target='_self'")
-                rank5 = ('<a href=' + link5 + '>' + country[5] + '</a>')
-
-                link6 = ("'http://127.0.0.1:8080/details1?Location=" + country[6] + "'" + "target='_self'")
-                rank6 = ('<a href=' + link6 + '>' + country[6] + '</a>')
-
-                link7 = ("'http://127.0.0.1:8080/details1?Location=" + country[7] + "'" + "target='_self'")
-                rank7 = ('<a href=' + link7 + '>' + country[7] + '</a>')
-                link8 = ("'http://127.0.0.1:8080/details1?Location=" + country[8] + "'" + "target='_self'")
-                rank8 = ('<a href=' + link8 + '>' + country[8] + '</a>')
-
-                link9 = ("'http://127.0.0.1:8080/details?Location=" + country[9] + "'" + "target='_self'")
-                rank9 = ('<a href=' + link9 + '>' + country[9] + '</a>')
-                
+                //applying data values to each rank based on SQL statement results
                 var data = [{
                 x: [rank0, rank1, rank2, rank3, rank4, rank5, rank6, rank7, rank8, rank9],
-                y: [count[0], count[1], count[2], count[3], count[4], count[5], count[6], count[7], count[8], count[9]],
+                y: [176331, 131987, 32548, 17689, 13279, 13004, 10687, 9953, 7949, 7079],
                 type: 'bar',
                 }];
 
+                //plot bar chart using plotly
                 Plotly.plot('mapdiv', data)
 
 

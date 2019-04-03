@@ -15,6 +15,7 @@ from flask import request
 from flask import render_template
 app = Flask(__name__)
 
+# Connecting to SQL database
 connection = mysql.connector.connect(
   host="localhost",
   user="root",
@@ -25,8 +26,7 @@ connection = mysql.connector.connect(
 
 print(connection)
 
-
-    
+# parameter for map
 @app.route('/map')
 def map(): 
     # note: check URL parameter "id"
@@ -50,6 +50,22 @@ def map():
             url.append( result[1] )
             title = result[2]
             artID.append(result[3])
+    
+    # if no locations in articles
+    if not place:
+        mycursor = connection.cursor()
+        sql = "SELECT Articles.URL, Articles.Title, Articles.PrimaryID FROM Articles WHERE Articles.PrimaryID = %d" % primary_id
+        mycursor.execute(sql)
+        url = []
+        title = ""
+        artID = []
+        
+        for result in mycursor.fetchall():
+            # note: ignore duplicates
+            if not result[0] in place:
+                url.append( result[0] )
+                title = (result[1])
+                artID.append(result[2])
 
     # Get the Coordinates next
     lat = []
@@ -68,17 +84,19 @@ def map():
 
     return render_template('map.html', PrimaryID = primary_id, title = title, url = url, lat = lat, lon = lon, place = place, artID = artID)
 
-
+# parameter for home page
 @app.route('/home')
 def home():
 
+    # declaring variables
     title = []
     primaryID = []  
     url = []
     labels = []
 
     mycursor = connection.cursor()
-    #mycursor.execute("SELECT Distinct Articles.Title, Articles.PrimaryID, Articles.url, categories.labels FROM Articles, categories order by Articles.Title ASC")
+    
+    # fetching all articles with their ID, URL and category label
     mycursor.execute("SELECT Articles.Title, Articles.PrimaryID, Articles.url, categories.labels FROM categories inner join Articles on Articles.PrimaryID  = categories.ID order by Articles.Title ASC")
     myresult = mycursor.fetchall() 
 
@@ -92,15 +110,19 @@ def home():
     
     return render_template('home.html', title = title, primaryID = primaryID, url =url, labels = labels)
 
+# parameter for related page
 @app.route('/related')
 def related():
 
+    # check the URL parameter 'ID'
     str_id = request.args.get("ID", default = "0")
     primary_id = int(str_id)
 
+    # declaring variables
     artTitle = []  
     artID = []
     
+    # fetching rank 1 of similar articles  
     mycursor = connection.cursor()
     mycursor.execute("SELECT Articles.Title, Articles.PrimaryID FROM Similarity inner join Articles on Articles.PrimaryID  = Similarity.Article1 WHERE Similarity.ID = %d" % primary_id)
     
@@ -113,6 +135,7 @@ def related():
     artTitle1 = []  
     artID1 = []
     
+    # fetching rank 2 of similar articles  
     mycursor = connection.cursor()
     mycursor.execute("SELECT Articles.Title, Articles.PrimaryID FROM Similarity inner join Articles on Articles.PrimaryID  = Similarity.Article2 WHERE Similarity.ID = %d" % primary_id)
     
@@ -125,6 +148,7 @@ def related():
     artTitle2 = []  
     artID2 = []
     
+    # fetching rank 3 of similar articles  
     mycursor = connection.cursor()
     mycursor.execute("SELECT Articles.Title, Articles.PrimaryID FROM Similarity inner join Articles on Articles.PrimaryID  = Similarity.Article3 WHERE Similarity.ID = %d" % primary_id)
     
@@ -137,6 +161,7 @@ def related():
     artTitle3 = []  
     artID3 = []
     
+    # fetching rank 4 of similar articles  
     mycursor = connection.cursor()
     mycursor.execute("SELECT Articles.Title, Articles.PrimaryID FROM Similarity inner join Articles on Articles.PrimaryID  = Similarity.Article4 WHERE Similarity.ID = %d" % primary_id)
     
@@ -149,6 +174,7 @@ def related():
     artTitle4 = []  
     artID4 = []
     
+    # fetching rank 5 of similar articles  
     mycursor = connection.cursor()
     mycursor.execute("SELECT Articles.Title, Articles.PrimaryID FROM Similarity inner join Articles on Articles.PrimaryID  = Similarity.Article5 WHERE Similarity.ID = %d" % primary_id)
     
@@ -160,25 +186,29 @@ def related():
 
     return render_template('related.html', artTitle = artTitle, artID = artID, artTitle1 = artTitle1, artID1 = artID1, artTitle2 = artTitle2, artID2 = artID2, artTitle3 = artTitle3, artID3 = artID3, artTitle4 = artTitle4, artID4 = artID4)
 
+# parameter for first country page
 @app.route('/country')
 def country():
 
-        # note: check URL parameter "id"
+    # note: check URL parameter "Lat" and "Long"
     str_id = request.args.get("Lat", default = "0")
     str_id1 = request.args.get("Long", default = "0")
 
     lat = float(str_id)
     long = float(str_id1)
 
+    # using LocationIQ to get country name using lat and long coordinates
     coordinates1 = ("https://eu1.locationiq.com/v1/reverse.php?key=25e9dfb148734f&lat=%f&lon=%f&format=json" %(lat, long)) 
     print(coordinates1)
     with urllib.request.urlopen(coordinates1) as url:
         data = json.loads(url.read().decode('utf-8'))
 
     country = (data['address']['country'])
+    print(country)
 
     mycursor = connection.cursor()
     
+    # fetching articles with their URL, title, ID and county
     sql = ("SELECT distinct Coordinates.Country, Articles.URL, Articles.Title, Articles.PrimaryID FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID inner join Coordinates on Location.LocationName = Coordinates.Place WHERE Coordinates.Country = '%s' order by Articles.Title ASC" % country)
     print(sql)
     mycursor.execute(sql)
@@ -190,113 +220,38 @@ def country():
     for result in mycursor.fetchall():
         primaryID.append(result[3])
         articlesTitle.append( result[2] ) 
-        articlesURL.append( result[1] )
-
-    print(primaryID, articlesTitle)    
+        articlesURL.append( result[1] )  
     
     return render_template('country.html', articlesTitle = articlesTitle, articlesURL = articlesURL, primaryID = primaryID, country = country)
 
+# parameter for rank page
 @app.route('/rank')
 def rank():
-        
-    str_id = request.args.get("Location", default = "0")
 
-    country = []
-    count = []
-    articlesTitle = []
+    return render_template('rank.html')
 
-    mycursor = connection.cursor()
-
-    mycursor.execute("SELECT distinct Coordinates.Country, count(Coordinates.Country) FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID inner join Coordinates on Coordinates.Place = Location.LocationName group by Coordinates.Country order by count(Coordinates.Country) desc Limit 10")
-    myresult = mycursor.fetchall() 
-
-    for row in myresult: 
-        country.append(row[0])
-        count.append(row[1])
-    
-    #print(country)
-
-    mycursor = connection.cursor()
-    mycursor.execute("SELECT Articles.Title, Articles.PrimaryID FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID WHERE Location.LocationName = '%s'" % str_id)
-    
-    for result in mycursor.fetchall():
-        articlesTitle.append( result[0]) 
-
-    return render_template('rank.html', country = country, count = count, articlesTitle = articlesTitle)
-
-@app.route('/details1')
-def details1():
-        
-    str_id = request.args.get("Location", default = "0")
-    #place = float(str_id)
-
-    articlesTitle = []
-    primaryID = []
-
-    mycursor = connection.cursor()
-    mycursor.execute("SELECT distinct Articles.Title, Articles.PrimaryID FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID inner join Coordinates on Coordinates.Place = Location.LocationName Where Coordinates.Country = '%s' order by Articles.Title ASC" % str_id)
-    
-    for result in mycursor.fetchall():
-        articlesTitle.append(result[0]) 
-        primaryID.append(result[1])
-
-    sport = 0
-    politics = 0
-    business = 0
-    entertainment = 0
-    tech = 0
-
-
-    mycursor = connection.cursor()
-    mycursor.execute("SELECT distinct COUNT(categories.labels), categories.labels, Coordinates.Country from Articles inner join categories on Articles.PrimaryID = categories.ID inner join Location on Location.LocationID = Articles.PrimaryID  inner join Coordinates on Coordinates.Place = Location.LocationName Where Coordinates.Country = '%s' group by categories.labels" % str_id)
-
-    for result in mycursor.fetchall():
-        if(result[1] == 'politics'):
-            politics += float(result[0])
-        
-        if(result[1] == 'sport'):
-            sport += float(result[0])
-        
-        if(result[1] == 'business'):
-            business += float(result[0])
-       
-        if(result[1] == 'entertainment'):
-            entertainment += float(result[0])
-        
-        if(result[1] == 'tech'):
-            tech += float(result[0])
-        
-
-    return render_template('details1.html', articlesTitle = articlesTitle, primaryID = primaryID, politics = politics, sport = sport, business= business, entertainment = entertainment, tech = tech, str_id = str_id)
-
+# parameter for calendar page
 @app.route('/calendar')
 def calendar():
-            # note: check URL parameter "id"
+    
+    # note: check URL parameter "date" and "category"
     date_id = request.args.get("date", default = "")
     category_id = request.args.get("category", default = "")
-    #primary_id = int(str_id)
+    
 
     mycursor = connection.cursor()
-    if(category_id == 'all'):
-        sql = "SELECT Distinct Location.LocationName, Articles.URL, Articles.Title, Articles.PrimaryID FROM Articles, Location WHERE Articles.Date = '%s' and Location.articleID = Articles.ID" % date_id
 
-    else:
-    # Get the Locations first
-        sql = "SELECT Distinct Location.LocationName, Articles.URL, Articles.Title, Articles.PrimaryID FROM  Location, Articles inner join categories on Articles.PrimaryID = categories.ID WHERE Articles.Date = '%s' and Location.articleID = Articles.ID and categories.labels = '%s'" % (date_id, category_id)
+    # fetching distinct place names
+    sql = "SELECT Distinct Location.LocationName FROM  Location, Articles inner join categories on Articles.PrimaryID = categories.ID WHERE Articles.Date = '%s' and Location.articleID = Articles.ID and categories.labels = '%s'" % (date_id, category_id)
     print(sql)
     mycursor.execute(sql)
+    
     place = []
-    url = []
-    title = ""
-    artID = []
 
     for result in mycursor.fetchall():
         # note: ignore duplicates
         if not result[0] in place:
             place.append( result[0] ) 
-            url.append( result[1] )
-            title = result[2]
-            artID.append(result[3])
 
     print(place)
 
@@ -310,24 +265,24 @@ def calendar():
             lat.append(result[0])
             lon.append(result[1])
 
-    # note: Just for debugging
-    #for i in range( len(place) ):
-     #   print( place[i], lat[i], lon[i] ) 
+    return render_template('calendar.html',  lat = lat, lon = lon, place = place, date_id = date_id, category_id = category_id)
 
-    return render_template('calendar.html', title = title, url = url, lat = lat, lon = lon, place = place, artID = artID, date_id = date_id, category_id = category_id)
-
+# parameter for click page
 @app.route('/click')
 def click():
     
     return render_template('click.html')
 
+# parameter for the second country page
 @app.route('/country2')
 def country2():
-        # note: check URL parameter "id"
+
+    # note: check URL parameter "Country"
     str_id = request.args.get("Country", default = " ")
     
     mycursor = connection.cursor()
     
+    # fetching distinct location based on articles with their URL and PrimaryID
     sql = ("SELECT distinct Location.LocationName, Articles.URL, Articles.Title, Articles.PrimaryID FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID inner join Coordinates on Location.LocationName = Coordinates.Place WHERE Location.LocationName = '%s' order by Articles.Title ASC" % str_id)
     print(sql)
     mycursor.execute(sql)
@@ -341,10 +296,34 @@ def country2():
         articlesTitle.append( result[2] ) 
         articlesURL.append( result[1] )
   
-    
     return render_template('country2.html', articlesTitle = articlesTitle, articlesURL = articlesURL, primaryID = primaryID, str_id = str_id)
 
+# parameter for third country page
+@app.route('/country3')
+def country3():
 
+    # note: check URL parameter "Country" and "Date" and "Category"
+    str_id = request.args.get("Country", default = " ")
+    date_id = request.args.get("Date", default = " ")
+    category_id = request.args.get("Category", default = " ")
+    
+    mycursor = connection.cursor()
+    
+    # fetching distinct location based on articles with their URL and PrimaryID
+    sql = ("SELECT distinct Location.LocationName, Articles.URL, Articles.Title, Articles.PrimaryID FROM Articles inner join Location on Location.LocationID = Articles.PrimaryID inner join Coordinates on Location.LocationName = Coordinates.Place inner join categories on Articles.PrimaryID = categories.ID WHERE Location.LocationName = '%s' and Articles.Date = '%s' and categories.labels = '%s' order by Articles.Title ASC" % (str_id, date_id, category_id))
+    print(sql)
+    mycursor.execute(sql)
+    
+    primaryID = []
+    articlesTitle = []
+    articlesURL = []
+
+    for result in mycursor.fetchall():
+        primaryID.append(result[3])
+        articlesTitle.append( result[2] ) 
+        articlesURL.append( result[1] )
+  
+    return render_template('country2.html', articlesTitle = articlesTitle, articlesURL = articlesURL, primaryID = primaryID, str_id = str_id)
 
 if __name__ == '__main__':
    app.run(debug = True,port=8080)

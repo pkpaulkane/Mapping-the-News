@@ -9,8 +9,10 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <style>
+        
+        <!-- Setting the style for my home page -->
 
+        <style>
         body {
             font: 400 15px/1.8 Lato, sans-serif;
             color: #777;
@@ -88,6 +90,7 @@
 
         </style>
         </head>
+        <!-- Navigation bar -->
         <body>
             <ul>
             <li><a class = "active" href = "{{ url_for('home') }}">Home</a></li>
@@ -96,6 +99,8 @@
             <li><a class="calendar" href="{{ url_for('calendar') }}">Calendar</a></li>
             </ul>
         </body>
+
+        <!-- Creating different icons with buttons for topics -->
   <body>
     <a> <br/> </a>
    <div class="row-text-center" id = "myDIV" align = "center">
@@ -143,38 +148,32 @@
         </div>
         </div>
   </div>
+  <!-- Using JS to get variables from flask for the articles -->
   <div id = "Articles" class = hidden align = "center" style="font-size:150%;" >
     <script>
-            var title = [];
+        
             var primaryID = [];
-            var url = [];
-            var labels = [];
+            var title = [];
         
             {% for id in primaryID %}
-                articleID = {{ id| safe }}
+                articleID = '{{ id }}'
                 primaryID.push(articleID)    
             {% endfor %}
-        
+
             {% for name in title %}
-                webTitle = '{{ name }}'
+                webTitle = {{ name | tojson }}
                 title.push(webTitle)    
             {% endfor %}
 
-            {% for category in labels %}
-                labelTitle = '{{ category }}'
-                labels.push(labelTitle)    
-            {% endfor %}
-
-
-            for (var i=0; i<title.length; i++) {
+            for (var i=0; i<4829; i++) {
                 link = "http://127.0.0.1:8080/map?PrimaryID=" + primaryID[i]
-        
                  document.write('<a href=' + link + '>' + title[i] + ' ' + '<br /></a>')
         
-            }
- 
+            } 
             </script>
   </div>
+
+  <!-- Using JS to get variables from flask for the sport articles -->
   <div id = "Sport" class = hidden align = "center" style="font-size:150%;" >
     <script>
             var title = [];
@@ -188,7 +187,7 @@
             {% endfor %}
         
             {% for name in title %}
-                webTitle = '{{ name }}'
+                webTitle = {{ name | tojson}}
                 title.push(webTitle)    
             {% endfor %}
 
@@ -196,7 +195,7 @@
                 labelTitle = '{{ category }}'
                 labels.push(labelTitle)    
             {% endfor %}
-
+            
             for (var i=0; i<title.length; i++) {
                 link = "http://127.0.0.1:8080/map?PrimaryID=" + primaryID[i]
 
@@ -207,6 +206,8 @@
  
             </script>
   </div>
+
+  <!-- Using JS to get variables from flask for the entertainment articles -->
   <div id = "Entertainment" class = hidden align = "center" style="font-size:150%;">
     <script>
             var title = [];
@@ -220,7 +221,7 @@
             {% endfor %}
         
             {% for name in title %}
-                webTitle = '{{ name }}'
+                webTitle = {{ name | tojson}}
                 title.push(webTitle)    
             {% endfor %}
 
@@ -239,6 +240,8 @@
  
             </script>
   </div>
+
+  <!-- Using JS to get variables from flask for the business articles -->
   <div id = "Business" class = hidden align = "center" style="font-size:150%;">
     <script>
             var title = [];
@@ -252,7 +255,7 @@
             {% endfor %}
         
             {% for name in title %}
-                webTitle = '{{ name }}'
+                webTitle = {{ name | tojson}}
                 title.push(webTitle)    
             {% endfor %}
 
@@ -271,6 +274,7 @@
  
             </script>
   </div>
+  <!-- Using JS to get variables from flask for the technology articles -->
   <div id = "Technology" class = hidden align = "center" style="font-size:150%;">
     <script>
             var title = [];
@@ -284,7 +288,7 @@
             {% endfor %}
         
             {% for name in title %}
-                webTitle = '{{ name }}'
+                webTitle = {{ name | tojson}}
                 title.push(webTitle)    
             {% endfor %}
 
@@ -303,6 +307,8 @@
  
             </script>
   </div>
+
+  <!-- Using JS to get variables from flask for the politics articles -->
   <div id = "Politics" class = hidden align = "center" style="font-size:150%;">
     <script>
             var title = [];
@@ -316,7 +322,7 @@
             {% endfor %}
         
             {% for name in title %}
-                webTitle = '{{ name }}'
+                webTitle = {{ name | tojson}}
                 title.push(webTitle)    
             {% endfor %}
 
@@ -336,6 +342,8 @@
             </script>
   </div>
   </body>
+
+  <!-- Script used to hide elements until clicked -->
   <script>
       function articles() {
     var x = document.getElementById("myDIV");

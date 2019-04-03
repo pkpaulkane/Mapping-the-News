@@ -9,7 +9,9 @@
       <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <style>
+   
+   <!-- Setting the style for my country page-->   
+   <style>
           body {
         font: 400 15px/1.8 Lato, sans-serif;
         color: #777;
@@ -66,6 +68,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
   <html>
         <head><title>Mapping the News</title></head>
+        <!-- Navigation bar -->
           <body>
             <ul>
             <li><a class = "politics" href = "{{ url_for('home') }}">Home</a></li>
@@ -81,12 +84,14 @@
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
         <script>
+
+                //filling each of the variables with variables from flask
                 var articlesTitle = []
                 var articlesURL = []
                 var primaryID = []
                 
                 {% for id in articlesTitle %}
-                articleID = '{{ id }}'
+                articleID = {{ id | tojson }}
                 articlesTitle.push(articleID)
                 {% endfor %}
   
@@ -100,8 +105,10 @@
                 primaryID.push(primary)
                 {% endfor %}
                 
+                //Loop to set the link for the map displaying the article title 
                 for (var i=0; i<articlesTitle.length; i++) {
                     link = "http://127.0.0.1:8080/map?PrimaryID=" + primaryID[i]
+                                 
                     document.write('<a href=' + link + '>' + articlesTitle[i] + ' ' + '<br /></a>')
                 }
 
@@ -111,18 +118,13 @@
         </div>
       </body>
       
+      <!-- Loading the map -->
       <body onload="init()">
           
           <div id="mapdiv"></div>
         </body>
-      
-      
-      </html>
-          
-  </div>
-</body>
-
-
-
+    
 </html>
+
+      
     

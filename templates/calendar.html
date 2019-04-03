@@ -8,8 +8,9 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <!-- Setting the style for my calendar page -->
     <style>
-
     body {
         font: 400 15px/1.8 Lato, sans-serif;
         color: #777;
@@ -70,6 +71,7 @@
 
     </style>
     </head>
+    <!-- Navigation bar -->
     <body>
         <ul>
         <li><a class = "home" href = "{{ url_for('home') }}">Home</a></li>
@@ -78,28 +80,31 @@
         <li><a class="active" href="{{ url_for('calendar') }}">Calendar</a></li>
         </ul>
     </body>
+    <!-- Calendar input for the date and drop down list for topics -->
 <body>
     Date: <input type="date" id="date1" value="2017-01-01"min="2017-01-01" max="2017-12-31">
     <select id="category1" name="Categories" value="Categories">
-        <option value="all">All Categories</option>
         <option value="business">Business</option>
         <option value="entertainment">Entertainment</option>
         <option value="politics">Politics</option>
         <option value="sport">Sport</option>
         <option value="tech">Technology</option>
       </select>
-    
+    <!-- Button to map articles-->
     <button onclick="myFunction()">Map me</button>
     <h3 style="display:inline-block;"> {{date_id}}     {{category_id}}  </h3>
     <div id="mapdiv" style="float: right; width: 100%; height: 100%; ">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
     <script>
+    //function to map articles based on date and category
     function myFunction() {
-    var date = document.getElementById("date1").value
-    var category = document.getElementById("category1").value
-      window.location = ("http://127.0.0.1:8080/calendar?date=" + date + "&category=" + category)
-    }
+        var date = document.getElementById("date1").value
+        var category = document.getElementById("category1").value
+        window.location = ("http://127.0.0.1:8080/calendar?date=" + date + "&category=" + category)
+        }
     var map;
+
+            //function for the OpenLayers map
             function init(){
                 map = new OpenLayers.Map("mapdiv");
                 map.addLayer(new OpenLayers.Layer.OSM());
@@ -112,52 +117,54 @@
                 var zoom=3;
                 map.setCenter (lonLat, zoom);
 
-                
-
                 var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
                 
+                //filling each of the variables with variables from flask
                 var lat = [];
                 var lon = []; 
                 var url = [];
                 var place = [];
                 var artID = []
                 
-                
 
                 {% for latitude in lat %}
-                    coordinateLat = '{{ latitude |e }}'
+                    coordinateLat = {{ latitude  }}
                     lat.push(coordinateLat)    
                 {% endfor %}
 
                 {% for longitude in lon %}
-                    coordinateLong = '{{ longitude |e }}'
+                    coordinateLong = {{ longitude  }}
                     lon.push(coordinateLong)    
                 {% endfor %}
 
                 {% for site in url %}
-                    coordSite = '{{ site |e }}'
+                    coordSite = {{ site  }}
                     url.push(coordSite)    
                 {% endfor %}
 
                 {% for name in place %}
-                    coordPlace = '{{ name |e }}'   
+                    coordPlace = {{ name | tojson }}   
                     place.push(coordPlace)    
                 {% endfor %}
 
                 {% for id in artID %}
-                    IDPlace = '{{ id |e }}'   
+                    IDPlace = {{ id }}   
                     artID.push(IDPlace)
                     link = "http://127.0.0.1:8080/related?ID=" + IDPlace    
                 {% endfor %}
 
+                var date 
+                date = {{date_id | tojson}}
 
+                var category 
+                category = {{category_id | tojson}}
 
-                //Loop through the markers array
+                //Loop through the markers array setting the location of markers and their URL with the place name
                 for (var i=0; i<lat.length; i++) {
                     
                     var feature = new OpenLayers.Feature.Vector(
                         new OpenLayers.Geometry.Point( lat[i], lon[i] ).transform(epsg4326, projectTo),
-                        {description: '<a href="http://127.0.0.1:8080/country2?Country=' + place[i] + '">' + place[i] + '</a>'},
+                        {description: '<a href="http://127.0.0.1:8080/country3?Country=' + place[i] + '&Date=' + date + '&Category=' + category + '">' + place[i] + '</a>'},
                         {externalGraphic: href = '/static/marker.png', graphicHeight: 50, graphicWidth: 40, graphicXOffset:-12, graphicYOffset:-25  }
                     ); 
             
@@ -213,6 +220,7 @@
   </div>
 </body>
 
+<!-- Loading the map -->
 <body onload="init()">
     
     <div id="mapdiv"></div>
