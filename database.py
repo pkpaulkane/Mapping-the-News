@@ -170,6 +170,17 @@ def normalize_text(series, keep_stop_words=False, lemmatization=True):
 corpus_content = df['BodyText']
 corpus_content = normalize_text(corpus_content, keep_stop_words=True, lemmatization=False)
 
+#defining the wordNet similarity 
+def find_distance_wordnet(word1,word2):
+    from nltk.corpus import wordnet as wn
+    _similarity = 0
+    for eachsyn in wn.synsets(word1):
+        for eachsyn2 in wn.synsets(word2):
+            path_simi = (wn.path_similarity(eachsyn,eachsyn2))
+            if (path_simi != None):
+                if (_similarity < path_simi):
+                    _similarity = path_simi
+    return _similarity  
 
 # opening the jsonl file for extracting article information
 with open('guardian-2017.jsonl', 'r') as f:
@@ -195,6 +206,8 @@ with open('guardian-2017.jsonl', 'r') as f:
         cursor = connection.cursor()
         cursor.execute(sql_insert_query, (content['id'], content['fields']['bodyText'],content['webUrl'], content['webTitle'], count, sectionID, date ))
         connection.commit()
+
+
 		
 		#applying spaCy NLP to tokenize text
         text = body
@@ -215,22 +228,25 @@ with open('guardian-2017.jsonl', 'r') as f:
                 if entity1.label_ in ('GPE'):
                     
                     #add entity to list
-                    list.append(entity1.text) 
+                    list.append(entity1.text)
                     
                     #run entity through world database 
-                    with open('MappingData.csv', 'r') as ff:
-                        reader2 = csv.reader(ff, delimiter=',')
-                        for row in reader2:
-                            if(entity1.text == row[0]):
-                            	#insert data into location database
-                                sql_insert_query = """ INSERT INTO `Location`
-                                              (`Count`, `articleID`,`LocationName`, `LocationID`) VALUES (%s, %s, %s, %s)"""
+                    reader2 = open("world.txt", 'r')
+                    for row in reader2:
+                        if(re.match((entity1.text), row)):
+                          #insert data into location database
+                            sql_insert_query = """ INSERT INTO `Location`
+                                          (`Count`, `articleID`,`LocationName`, `LocationID`) VALUES (%s, %s, %s, %s)"""
 
-                                cursor = connection.cursor()
-                                cursor.execute(sql_insert_query, (counter, content['id'], entity1.text, count))
-                                counter += 1
-                                connection.commit()
-                    
+                            cursor = connection.cursor()
+                            cursor.execute(sql_insert_query, (counter, content['id'], entity1.text, count))
+                            counter += 1
+                            connection.commit()
+          
+
+
+
+                      
 mycursor = connection.cursor()
 
 
@@ -264,7 +280,7 @@ for z in range(total):
     sentence1 = re.sub(r'\bPLACE\b', places, sentence1)
     
     # for all of the article
-    for article in range(82677):
+    for article in range(82768):
 	
         length = (len(corpus_content[article]))
         
@@ -331,6 +347,10 @@ for z in range(total):
       cursor.execute(sql_insert_query, (counting, places, latitude, longitude, country))
       connection.commit()
 
+      #prevent exceeding LocationIQ limit
+      if counter == 4950:
+        break
+
 #Removing duplicates fromm list of unknown places
 def Remove(duplicate): 
     final_list = [] 
@@ -348,14 +368,3 @@ with open('errorLog.csv', "w") as f:
     for row in removeDuplicates:
         writer.writerow([row])
 
-#defining the wordNet similarity 
-def find_distance_wordnet(word1,word2):
-    from nltk.corpus import wordnet as wn
-    _similarity = 0
-    for eachsyn in wn.synsets(word1):
-        for eachsyn2 in wn.synsets(word2):
-            path_simi = (wn.path_similarity(eachsyn,eachsyn2))
-            if (path_simi != None):
-                if (_similarity < path_simi):
-                    _similarity = path_simi
-    return _similarity  
